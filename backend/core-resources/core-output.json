@@ -1,0 +1,95 @@
+{
+    "Stacks": [
+        {
+            "StackId": "arn:aws:cloudformation:us-east-1:601091111123:stack/todo-houessou-com-ecs/d8d93340-0d84-11ec-bc27-0e2697a4acd1",
+            "StackName": "todo-houessou-com-ecs",
+            "Description": "This stack deploys the core network infrastructure and IAM resources to be used for a service hosted in Amazon ECS using EC2.",
+            "CreationTime": "2021-09-04T13:34:36.752000+00:00",
+            "RollbackConfiguration": {},
+            "StackStatus": "CREATE_COMPLETE",
+            "DisableRollback": false,
+            "NotificationARNs": [],
+            "Capabilities": [
+                "CAPABILITY_NAMED_IAM"
+            ],
+            "Outputs": [
+                {
+                    "OutputKey": "EcsTaskDefinition",
+                    "OutputValue": "arn:aws:ecs:us-east-1:601091111123:task-definition/todo-houessou-com-ecs-task-definition:5",
+                    "ExportName": "todo-houessou-com-ecs-EcsTaskDefinition"
+                },
+                {
+                    "OutputKey": "Ecscluster",
+                    "OutputValue": "todo-houessou-com-ecs-ECSCluster-IyAcJBbfjHms",
+                    "ExportName": "todo-houessou-com-ecs-ECSCluster"
+                },
+                {
+                    "OutputKey": "CurrentAccount",
+                    "OutputValue": "601091111123",
+                    "ExportName": "todo-houessou-com-ecs-CurrentAccount"
+                },
+                {
+                    "OutputKey": "ECSTaskRoleArn",
+                    "OutputValue": "arn:aws:iam::601091111123:role/todo-houessou-com-ecs-ECSTaskRole-1EDJN4DY4IOFK",
+                    "ExportName": "todo-houessou-com-ecs-ECSTaskRoleArn"
+                },
+                {
+                    "OutputKey": "PrivateSubnetTwo",
+                    "OutputValue": "subnet-0e520aab2b20e955f",
+                    "ExportName": "todo-houessou-com-ecs-PrivateSubnetTwo"
+                },
+                {
+                    "OutputKey": "CurrentRegion",
+                    "OutputValue": "us-east-1",
+                    "ExportName": "todo-houessou-com-ecs-CurrentRegion"
+                },
+                {
+                    "OutputKey": "VPCId",
+                    "OutputValue": "vpc-0d0e6e42a2a285a2c",
+                    "ExportName": "todo-houessou-com-ecs-VPCId"
+                },
+                {
+                    "OutputKey": "EcsService",
+                    "OutputValue": "arn:aws:ecs:us-east-1:601091111123:service/todo-houessou-com-ecs-ECSCluster-IyAcJBbfjHms/todo-houessou-com-ecs-EcsService-HSmgPoWnYHQH",
+                    "ExportName": "todo-houessou-com-ecs-EcsService"
+                },
+                {
+                    "OutputKey": "EcsContainerSecurityGroup",
+                    "OutputValue": "sg-070b77eeaa6cfcdfd",
+                    "ExportName": "todo-houessou-com-ecs-EcsContainerSecurityGroup"
+                },
+                {
+                    "OutputKey": "PrivateSubnetOne",
+                    "OutputValue": "subnet-07b168a0809257660",
+                    "ExportName": "todo-houessou-com-ecs-PrivateSubnetOne"
+                },
+                {
+                    "OutputKey": "PublicSubnetOne",
+                    "OutputValue": "subnet-03c06456703136bed",
+                    "ExportName": "todo-houessou-com-ecs-PublicSubnetOne"
+                },
+                {
+                    "OutputKey": "PublicSubnetTwo",
+                    "OutputValue": "subnet-03c095d8234f4656b",
+                    "ExportName": "todo-houessou-com-ecs-PublicSubnetTwo"
+                },
+                {
+                    "OutputKey": "ECSALB",
+                    "OutputValue": "todo-houessou-com-ecs-ALB-792820795.us-east-1.elb.amazonaws.com",
+                    "Description": "Your ALB DNS URL",
+                    "ExportName": "todo-houessou-com-ecs-ECSALB"
+                },
+                {
+                    "OutputKey": "EcsServiceRoleArn",
+                    "OutputValue": "arn:aws:iam::601091111123:role/todo-houessou-com-ecs-EcsServiceRole-1KTU8IICGSRQA",
+                    "ExportName": "todo-houessou-com-ecs-EcsServiceRoleArn"
+                }
+            ],
+            "Tags": [],
+            "EnableTerminationProtection": false,
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        }
+    ]
+}

@@ -1,0 +1,47 @@
+# Create the core resources
+## Core stack
+aws cloudformation create-stack --stack-name todo-houessou-com-ecs --capabilities CAPABILITY_NAMED_IAM --template-body file://./core.yaml
+
+## Export core stack resources to output file
+aws cloudformation describe-stacks --stack-name todo-houessou-com-ecs > core-output.json
+
+# Docker image and ECR repo
+## Build the docker image
+docker build . -t ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/todo-houessou-com-ecs/todo-main-service:latest
+
+## authenticate to ECR
+$(aws ecr get-login --no-include-email) or
+aws ecr get-login-password | docker login --username AWS --password-stdin ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/repository
+
+## push the docker image to ECR
+docker push ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/todo-houessou-com-ecs/todo-main-service:latest
+
+## Create ECR repository
+aws ecr create-repository --repository-name todo-houessou-com-ecs/todo-main-service
+
+# ECS Cluster and task definition
+## Create an ECS Cluster
+aws ecs create-cluster --cluster-name todo-houessou-com-ecs-Cluster
+
+## Create an AWS CloudWatch Logs Group
+aws logs create-log-group --log-group-name todo-houessou-com-ecs-logs
+
+## Register an ECS Task Definition
+aws ecs register-task-definition --cli-input-json file://./task-definition.json
+
+# Enabling a Load Balanced ECS Service
+## Create a Network Load Balancer
+aws elbv2 create-load-balancer --name todo-houessou-com-ecs-nlb --scheme internet-facing --type network --subnets subnet-0667f7ab6292f783f subnet-05e9e6c5c6178ea7d > nlb-output.json
+
+## Create a Load Balancer Target Group
+aws elbv2 create-target-group --name todo-ecs-TargetGroup --port 8080 --protocol TCP --target-type ip --vpc-id vpc-0561b26ca1ed7ce7b --health-check-interval-seconds 10 --health-check-path / --health-check-protocol HTTP --healthy-threshold-count 3 --unhealthy-threshold-count 3 > nlb-target-group-output.json
+
+## Create a Load Balancer Listener
+aws elbv2 create-listener --default-actions TargetGroupArn=arn:aws:elasticloadbalancing:us-east-1:601091111123:targetgroup/todo-ecs-TargetGroup/81535a322f3b2b82,Type=forward --load-balancer-arn arn:aws:elasticloadbalancing:us-east-1:601091111123:loadbalancer/net/todo-houessou-com-ecs-nlb/7b012647f5d50ef6 --port 80 --protocol TCP
+
+# Creating a Service with ECS EC2
+## Creating a Service Linked Role for ECS
+aws iam create-service-linked-role --aws-service-name ecs.amazonaws.com
+
+## Create the Service
+aws ecs create-service --cli-input-json file://./service-definition.json

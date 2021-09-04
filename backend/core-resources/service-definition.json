@@ -1,0 +1,31 @@
+{
+    "serviceName": "todo-houessou-com-ecs-Service",
+    "cluster": "todo-houessou-com-ecs-Cluster",
+    "launchType": "EC2",
+    "deploymentConfiguration": {
+      "maximumPercent": 200,
+      "minimumHealthyPercent": 100
+    },
+    "desiredCount": 1,
+    "networkConfiguration": {
+      "awsvpcConfiguration": {
+        "assignPublicIp": "DISABLED",
+        "securityGroups": [
+          "sg-04fa6e88b8cef10eb"
+        ],
+        "subnets": [
+          "subnet-041352bd0916e5b64",
+          "subnet-0fe3e935c04f79047"
+        ]
+      }
+    },
+    "taskDefinition": "todohouessoucomecsservice",
+    "loadBalancers": [
+      {
+        "containerName": "todo-houessou-com-ecs-Service",
+        "containerPort": 8080,
+        "targetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:601091111123:targetgroup/todo-ecs-TargetGroup/81535a322f3b2b82"
+      }
+    ]
+  }
+  
