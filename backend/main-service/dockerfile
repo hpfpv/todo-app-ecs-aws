@@ -1,7 +1,4 @@
 FROM python:3.8-alpine
-ENV TODO_TABLE="TodoTable-todo-houessou-com"
-ENV TODOFILES_TABLE="TodoFilesTable-todo-houessou-com-attachments-service"
-ENV TODOFILES_BUCKET="hpf-todo-app-files"
 RUN pip3 install --upgrade pip
 RUN mkdir -p /todoApp
 COPY ./todoApp /todoApp

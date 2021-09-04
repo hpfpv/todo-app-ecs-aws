@@ -90,13 +90,9 @@ def addTodoNotes(userID, todoID):
     return flaskResponse
 
 #route for health checks
-@app.route('/', methods=['POST'])
-def test():
-    eventBody = request.json["notes"]
-    
-    print (eventBody)
-    print (request.args.get('filter'))
-    
+@app.route('/', methods=['GET'])
+def healthCheck():
+        
     flaskResponse = Response({})
     flaskResponse.success = True
     flaskResponse.headers["Content-Type"] = "application/json"

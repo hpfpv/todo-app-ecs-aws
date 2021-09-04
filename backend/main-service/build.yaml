@@ -1,30 +1,12 @@
 version: '3'
 services:
-  my-user-app:
-    image: 601091111123.dkr.ecr.us-east-1.amazonaws.com/my-user-app:latest
+  todo-main-service:
+    image: 601091111123.dkr.ecr.us-east-1.amazonaws.com/todo-houessou-com-ecs/todo-main-service:latest
     ports:
-      - 5001:5001
-
-  mongodb:
-    image: mongo
-    ports:
-      - 27017:27017
+      - 8080:8080
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=password
-    volumes: 
-      - mongo-data:/data/db
+      - TODO_TABLE=TodoTable-todo-houessou-com
+      - TODOFILES_TABLE=TodoFilesTable-todo-houessou-com-attachments-service
+      - TODOFILES_BUCKET=hpf-todo-app-files
 
-  mongo-express:
-    image: mongo-express
-    ports:
-      - 8080:8081
-    environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=password
-      - ME_CONFIG_MONGODB_SERVER=mongodb
-
-volumes:
-  mongo-data:
-    driver: local
 

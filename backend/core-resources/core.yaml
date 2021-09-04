@@ -1,7 +1,7 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: This stack deploys the core network infrastructure and IAM resources
-             to be used for a service hosted in Amazon ECS using EC2.
+Description: This stack deploys the core infrastructure and ECS service 
+             and task definition to be used for todo-houessou-com-ecs main service.
 
 Mappings:
   SubnetConfig:

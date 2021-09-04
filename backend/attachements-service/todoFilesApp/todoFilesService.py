@@ -36,8 +36,7 @@ def getTodos(userID):
     # to the specified userID.
     filter = "userID"
     response = client.query(
-        #TableName=os.environ['TODO_TABLE'],
-        TableName="TodoTable-todo-houessou-com",
+        TableName=os.environ['TODO_TABLE'],
         IndexName=filter+'Index',
         KeyConditions={
             filter: {
