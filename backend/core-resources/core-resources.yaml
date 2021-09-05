@@ -595,8 +595,15 @@ Resources:
           /:
             get:
               responses:
-                default:
-                  description: "For health checks"
+                '200':
+                  description: Default response for CORS method
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
               x-amazon-apigateway-integration:
                 type: "HTTP_PROXY"
                 httpMethod: "GET"
@@ -609,6 +616,43 @@ Resources:
                       method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName', '/' ]]
                 connectionType: "INTERNET"
+            options:
+              summary: CORS support
+              description: 'Enable CORS by returning correct headers
+
+                '
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              tags:
+              - CORS
+              x-amazon-apigateway-integration:
+                type: mock
+                requestTemplates:
+                  application/json: |
+                    {
+                      "statusCode" : 200
+                    }
+                responses:
+                  default:
+                    statusCode: '200'
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
+                    responseTemplates:
+                      application/json: "{}\n"
+              responses:
+                '200':
+                  description: Default response for CORS method
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
           /{userID}/todos:
             get:
               parameters:
@@ -617,8 +661,15 @@ Resources:
                   required: true
                   type: string
               responses:
-                default:
-                  description: "Default response for GET /{userID}/todos"
+                '200':
+                  description: Default response for CORS method
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
               security:
               - TodoAuthorizer: []
               x-amazon-apigateway-integration:
@@ -634,6 +685,43 @@ Resources:
                       method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos'] ]
                 connectionType: "INTERNET"
+            options:
+              summary: CORS support
+              description: 'Enable CORS by returning correct headers
+
+                '
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              tags:
+              - CORS
+              x-amazon-apigateway-integration:
+                type: mock
+                requestTemplates:
+                  application/json: |
+                    {
+                      "statusCode" : 200
+                    }
+                responses:
+                  default:
+                    statusCode: '200'
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
+                    responseTemplates:
+                      application/json: "{}\n"
+              responses:
+                '200':
+                  description: Default response for CORS method
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
           /{userID}/todos/{todoID}:
             get:
               parameters:
@@ -646,8 +734,15 @@ Resources:
                     required: true
                     type: string
               responses:
-                default:
-                  description: "Default response for GET /{userID}/todos/{todoID}"
+                '200':
+                  description: Default response for CORS method
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
               security:
               - TodoAuthorizer: []
               x-amazon-apigateway-integration:
@@ -663,6 +758,43 @@ Resources:
                       method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}'] ]
                 connectionType: "INTERNET"
+            options:
+              summary: CORS support
+              description: 'Enable CORS by returning correct headers
+
+                '
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              tags:
+              - CORS
+              x-amazon-apigateway-integration:
+                type: mock
+                requestTemplates:
+                  application/json: |
+                    {
+                      "statusCode" : 200
+                    }
+                responses:
+                  default:
+                    statusCode: '200'
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
+                    responseTemplates:
+                      application/json: "{}\n"
+              responses:
+                '200':
+                  description: Default response for CORS method
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
           /{userID}/todos/add:
             post:
               parameters:
@@ -671,8 +803,15 @@ Resources:
                     required: true
                     type: string
               responses:
-                default:
-                  description: "Default response for POST /{userID}/todos/add"
+                '200':
+                  description: Default response for CORS method
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
               security:
               - TodoAuthorizer: []
               x-amazon-apigateway-integration:
@@ -737,8 +876,15 @@ Resources:
                     required: true
                     type: string
               responses:
-                default:
-                  description: "Default response for DELETE /{userID}/todos/{todoID}/delete"
+                '200':
+                  description: Default response for CORS method
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
               security:
               - TodoAuthorizer: []
               x-amazon-apigateway-integration:
@@ -753,6 +899,43 @@ Resources:
                       method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}/delete'] ]
                 connectionType: "INTERNET"
+            options:
+              summary: CORS support
+              description: 'Enable CORS by returning correct headers
+
+                '
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              tags:
+              - CORS
+              x-amazon-apigateway-integration:
+                type: mock
+                requestTemplates:
+                  application/json: |
+                    {
+                      "statusCode" : 200
+                    }
+                responses:
+                  default:
+                    statusCode: '200'
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
+                    responseTemplates:
+                      application/json: "{}\n"
+              responses:
+                '200':
+                  description: Default response for CORS method
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
           /{userID}/todos/{todoID}/addnotes:
             post:
               parameters:
@@ -765,8 +948,15 @@ Resources:
                     required: true
                     type: string
               responses:
-                default:
-                  description: "Default response for POST /{userID}/todos/{todoID}/addnotes"
+                '200':
+                  description: Default response for CORS method
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
               security:
               - TodoAuthorizer: []
               x-amazon-apigateway-integration:
@@ -831,8 +1021,15 @@ Resources:
                     required: true
                     type: string
               responses:
-                default:
-                  description: "Default response for POST /{userID}/todos/{todoID}/complete"
+                '200':
+                  description: Default response for CORS method
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
               security:
               - TodoAuthorizer: []
               x-amazon-apigateway-integration:
@@ -848,19 +1045,43 @@ Resources:
                       method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}/complete'] ]
                 connectionType: "INTERNET"
-        x-amazon-apigateway-cors:
-          allowMethods:
-          - "DELETE"
-          - "GET"
-          - "POST"
-          allowHeaders:
-          - "*"
-          maxAge: 0
-          allowCredentials: false
-          allowOrigins:
-          - "https://todo.houessou.com"
-          - "https://todo2.houessou.com"
-        x-amazon-apigateway-importexport-version: "1.0"
+            options:
+              summary: CORS support
+              description: 'Enable CORS by returning correct headers
+
+                '
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              tags:
+              - CORS
+              x-amazon-apigateway-integration:
+                type: mock
+                requestTemplates:
+                  application/json: |
+                    {
+                      "statusCode" : 200
+                    }
+                responses:
+                  default:
+                    statusCode: '200'
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
+                    responseTemplates:
+                      application/json: "{}\n"
+              responses:
+                '200':
+                  description: Default response for CORS method
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
 
 Outputs:
   CurrentRegion:
