@@ -365,7 +365,7 @@ Resources:
       #      - !Ref PrivateSubnetOne
       #      - !Ref PrivateSubnetTwo
       LoadBalancers:
-        - ContainerName: todo-houessou-com-ecs-Service
+        - ContainerName: !Join [ '-', [ !Ref 'AWS::StackName', 'Service'] ]
           ContainerPort: 8080
           TargetGroupArn: !Ref ECSTG
       Role: !Ref EcsServiceRole
