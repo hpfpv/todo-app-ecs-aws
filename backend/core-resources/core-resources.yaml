@@ -41,16 +41,16 @@ Resources:
       CidrBlock: !FindInMap ['SubnetConfig', 'PublicOne', 'CIDR']
       MapPublicIpOnLaunch: true
 
-  PublicSubnetTwo:
-    Type: AWS::EC2::Subnet
-    Properties:
-      AvailabilityZone:
-         Fn::Select:
-         - 1
-         - Fn::GetAZs: {Ref: 'AWS::Region'}
-      VpcId: !Ref VPC
-      CidrBlock: !FindInMap ['SubnetConfig', 'PublicTwo', 'CIDR']
-      MapPublicIpOnLaunch: true
+  #PublicSubnetTwo:
+  #  Type: AWS::EC2::Subnet
+  #  Properties:
+  #    AvailabilityZone:
+  #       Fn::Select:
+  #       - 1
+  #       - Fn::GetAZs: {Ref: 'AWS::Region'}
+  #    VpcId: !Ref VPC
+  #    CidrBlock: !FindInMap ['SubnetConfig', 'PublicTwo', 'CIDR']
+  #    MapPublicIpOnLaunch: true
 
   PrivateSubnetOne:
     Type: AWS::EC2::Subnet
@@ -62,15 +62,15 @@ Resources:
       VpcId: !Ref VPC
       CidrBlock: !FindInMap ['SubnetConfig', 'PrivateOne', 'CIDR']
 
-  PrivateSubnetTwo:
-    Type: AWS::EC2::Subnet
-    Properties:
-      AvailabilityZone:
-         Fn::Select:
-         - 1
-         - Fn::GetAZs: {Ref: 'AWS::Region'}
-      VpcId: !Ref VPC
-      CidrBlock: !FindInMap ['SubnetConfig', 'PrivateTwo', 'CIDR']
+  #PrivateSubnetTwo:
+  #  Type: AWS::EC2::Subnet
+  #  Properties:
+  #    AvailabilityZone:
+  #       Fn::Select:
+  #       - 1
+  #       - Fn::GetAZs: {Ref: 'AWS::Region'}
+  #    VpcId: !Ref VPC
+  #    CidrBlock: !FindInMap ['SubnetConfig', 'PrivateTwo', 'CIDR']
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
@@ -100,11 +100,11 @@ Resources:
       SubnetId: !Ref PublicSubnetOne
       RouteTableId: !Ref PublicRouteTable
 
-  PublicSubnetTwoRouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      SubnetId: !Ref PublicSubnetTwo
-      RouteTableId: !Ref PublicRouteTable
+  #PublicSubnetTwoRouteTableAssociation:
+  #  Type: AWS::EC2::SubnetRouteTableAssociation
+  #  Properties:
+  #    SubnetId: !Ref PublicSubnetTwo
+  #    RouteTableId: !Ref PublicRouteTable
 
   NatGatewayOneAttachment:
     Type: AWS::EC2::EIP
@@ -112,11 +112,11 @@ Resources:
     Properties:
         Domain: vpc
 
-  NatGatewayTwoAttachment:
-    Type: AWS::EC2::EIP
-    DependsOn: GatewayAttachement
-    Properties:
-        Domain: vpc
+  #NatGatewayTwoAttachment:
+  #  Type: AWS::EC2::EIP
+  #  DependsOn: GatewayAttachement
+  #  Properties:
+  #      Domain: vpc
 
   NatGatewayOne:
     Type: AWS::EC2::NatGateway
@@ -124,11 +124,11 @@ Resources:
       AllocationId: !GetAtt NatGatewayOneAttachment.AllocationId
       SubnetId: !Ref PublicSubnetOne
 
-  NatGatewayTwo:
-    Type: AWS::EC2::NatGateway
-    Properties:
-      AllocationId: !GetAtt NatGatewayTwoAttachment.AllocationId
-      SubnetId: !Ref PublicSubnetTwo
+  #NatGatewayTwo:
+  #  Type: AWS::EC2::NatGateway
+  #  Properties:
+  #    AllocationId: !GetAtt NatGatewayTwoAttachment.AllocationId
+  #    SubnetId: !Ref PublicSubnetTwo
 
   PrivateRouteTableOne:
     Type: AWS::EC2::RouteTable
@@ -148,23 +148,23 @@ Resources:
       RouteTableId: !Ref PrivateRouteTableOne
       SubnetId: !Ref PrivateSubnetOne
 
-  PrivateRouteTableTwo:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId: !Ref VPC
+  #PrivateRouteTableTwo:
+  #  Type: AWS::EC2::RouteTable
+  #  Properties:
+  #    VpcId: !Ref VPC
 
-  PrivateRouteTwo:
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId: !Ref PrivateRouteTableTwo
-      DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref NatGatewayTwo
+  #PrivateRouteTwo:
+  #  Type: AWS::EC2::Route
+  #  Properties:
+  #    RouteTableId: !Ref PrivateRouteTableTwo
+  #    DestinationCidrBlock: 0.0.0.0/0
+  #    NatGatewayId: !Ref NatGatewayTwo
 
-  PrivateRouteTableTwoAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId: !Ref PrivateRouteTableTwo
-      SubnetId: !Ref PrivateSubnetTwo
+  #PrivateRouteTableTwoAssociation:
+  #  Type: AWS::EC2::SubnetRouteTableAssociation
+  #  Properties:
+  #    RouteTableId: !Ref PrivateRouteTableTwo
+  #    SubnetId: !Ref PrivateSubnetTwo
   
   ECSCluster:
     Type: 'AWS::ECS::Cluster'
@@ -379,7 +379,6 @@ Resources:
           Value: '30'
       Subnets: 
         - !Ref 'PublicSubnetOne'
-        - !Ref 'PublicSubnetTwo'
       SecurityGroups:
         - !Ref ALBSecurityGroup
 
@@ -428,7 +427,6 @@ Resources:
     Properties:
       VPCZoneIdentifier:
         - !Ref PrivateSubnetOne
-        - !Ref PrivateSubnetTwo
       LaunchConfigurationName: !Ref ContainerInstances
       MinSize: 1
       MaxSize: 2
