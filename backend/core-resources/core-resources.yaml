@@ -354,9 +354,6 @@ Resources:
         MaximumPercent: 200
         MinimumHealthyPercent: 100
       DesiredCount: 1
-      PlacementStrategy:
-        - Field: instanceId
-          Type: Spread
       #NetworkConfiguration: 
       #  AwsvpcConfiguration:
       #    AssignPublicIp: "DISABLED"
