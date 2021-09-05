@@ -75,7 +75,7 @@ def completeTodo(userID, todoID):
 
     return flaskResponse
 
-@app.route('/<userID>/todos/<todoID>/addnote', methods=['POST'])
+@app.route('/<userID>/todos/<todoID>/addnotes', methods=['POST'])
 def addTodoNotes(userID, todoID):
 
     notes = request.json["notes"]
