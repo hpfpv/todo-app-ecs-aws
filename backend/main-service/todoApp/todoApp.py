@@ -89,7 +89,7 @@ def addTodoNotes(userID, todoID):
 
     return flaskResponse
 
-#route for health checks only only
+#route for health checks only 
 @app.route('/', methods=['GET'])
 def healthCheck():
         
