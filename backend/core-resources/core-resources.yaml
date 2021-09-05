@@ -327,7 +327,7 @@ Resources:
         - Name: !Join [ '-', [ !Ref 'AWS::StackName', 'Service'] ]
           Cpu: '10'
           Essential: 'true'
-          Image: !Join [ '', [!Ref "AWS::AccountId", ".dkr.ecr.", !Ref 'AWS::Region', '.amazonaws.com/todo-houessou-com-ecs/todo-main-service:latest']]
+          Image: !Join [ '', [!Ref "AWS::AccountId", ".dkr.ecr.", !Ref 'AWS::Region', '.amazonaws.com/todo-houessou-com-ecs/todo-main-service:1']]
           Memory: '300'
           LogConfiguration:
             LogDriver: awslogs
