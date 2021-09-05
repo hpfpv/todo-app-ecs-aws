@@ -690,7 +690,7 @@ Resources:
                           - - 'https://cognito-idp.'
                             - '${AWS::Region}'
                             - '.amazonaws.com/'
-                            - !ImportValue todo-houessou-com-TodoUserPoo
+                            - !ImportValue todo-houessou-com-TodoUserPool
                 type: "jwt"
         x-amazon-apigateway-cors:
           allowMethods:
