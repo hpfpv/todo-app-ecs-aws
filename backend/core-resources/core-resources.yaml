@@ -336,7 +336,7 @@ Resources:
           PortMappings:
             - ContainerPort: 8080
           Environment:
-            - Name: ENV TODO_TABLE
+            - Name: TODO_TABLE
               Value: TodoTable-todo-houessou-com
             - Name: TODOFILES_TABLE
               Value: TodoFilesTable-todo-houessou-com-attachments-service
