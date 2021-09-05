@@ -587,17 +587,10 @@ Resources:
                 default:
                   description: "For health checks"
               x-amazon-apigateway-integration:
-                type: "http_proxy"
+                type: "HTTP_PROXY"
                 httpMethod: "GET"
                 uri: !Join [ '', [!GetAtt 'ECSALB.DNSName','/'] ]
                 connectionType: "INTERNET"
-                responses:
-                  default:
-                      statusCode: '200'
-                      responseParameters:
-                        method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
-                        method.response.header.Access-Control-Allow-Methods: "'*'"
-                        method.response.header.Access-Control-Allow-Origin: "'*'"
           /{userID}/todos:
             get:
               responses:
@@ -607,7 +600,7 @@ Resources:
               - TodoAuthorizer: []
               x-amazon-apigateway-integration:
                 payloadFormatVersion: "2.0"
-                type: "http_proxy"
+                type: "HTTP_PROXY"
                 httpMethod: "POST"
                 uri: !Join [ '', [!GetAtt 'ECSALB.DNSName','/{userID}/todos'] ]
                 connectionType: "INTERNET"
@@ -620,7 +613,7 @@ Resources:
               - TodoAuthorizer: []
               x-amazon-apigateway-integration:
                 payloadFormatVersion: "2.0"
-                type: "http_proxy"
+                type: "HTTP_PROXY"
                 httpMethod: "POST"
                 uri: !Join [ '', [!GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}'] ]
                 connectionType: "INTERNET"
@@ -633,7 +626,7 @@ Resources:
               - TodoAuthorizer: []
               x-amazon-apigateway-integration:
                 payloadFormatVersion: "2.0"
-                type: "http_proxy"
+                type: "HTTP_PROXY"
                 httpMethod: "POST"
                 uri: !Join [ '', [!GetAtt 'ECSALB.DNSName','/{userID}/todos/add'] ]
                 connectionType: "INTERNET"
@@ -645,7 +638,7 @@ Resources:
               security:
               - TodoAuthorizer: []
               x-amazon-apigateway-integration:
-                type: "http_proxy"
+                type: "HTTP_PROXY"
                 httpMethod: "POST"
                 uri: !Join [ '', [!GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}/delete'] ]
                 connectionType: "INTERNET"
@@ -658,7 +651,7 @@ Resources:
               - TodoAuthorizer: []
               x-amazon-apigateway-integration:
                 payloadFormatVersion: "2.0"
-                type: "http_proxy"
+                type: "HTTP_PROXY"
                 httpMethod: "POST"
                 uri: !Join [ '', [!GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}/addnotes'] ]
                 connectionType: "INTERNET"
@@ -671,7 +664,7 @@ Resources:
               - TodoAuthorizer: []
               x-amazon-apigateway-integration:
                 payloadFormatVersion: "2.0"
-                type: "http_proxy"
+                type: "HTTP_PROXY"
                 httpMethod: "POST"
                 uri: !Join [ '', [!GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}/complete'] ]
                 connectionType: "INTERNET"
