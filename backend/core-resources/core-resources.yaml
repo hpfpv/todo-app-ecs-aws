@@ -322,7 +322,7 @@ Resources:
       ExecutionRoleArn: !Ref EcsServiceRole
       TaskRoleArn: !Ref ECSTaskRole
       RequiresCompatibilities: 
-        EC2
+        - EC2
       ContainerDefinitions:
         - Name: !Join [ '-', [ !Ref 'AWS::StackName', 'Service'] ]
           Cpu: '10'
