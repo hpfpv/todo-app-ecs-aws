@@ -36,8 +36,7 @@ def getTodos(userID):
     # to the specified userID.
     filter = "userID"
     response = client.query(
-        #TableName=os.environ['TODO_TABLE'],
-        TableName="TodoTable-todo-houessou-com",
+        TableName=os.environ['TODO_TABLE'],
         IndexName=filter+'Index',
         KeyConditions={
             filter: {
@@ -112,8 +111,7 @@ def getTodoJson(item):
 
 def getTodo(todoID):
     response = client.get_item(
-        #TableName=os.environ['TODO_TABLE'],
-        TableName="TodoTable-todo-houessou-com",
+        TableName=os.environ['TODO_TABLE'],
         Key={
             'todoID': {
                 'S': todoID
@@ -129,8 +127,8 @@ s3 = boto3.resource('s3')
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-#bucket = s3.Bucket(os.environ['TODOFILES_BUCKET'])
-bucket = "hpf-todo-app-files"
+bucket = s3.Bucket(os.environ['TODOFILES_BUCKET'])
+
 def getFilesJson(items):
     # loop through the returned todos and add their attributes to a new dict
     # that matches the JSON response structure expected by the frontend.
@@ -150,8 +148,7 @@ def getTodosFiles(todoID):
     # to the specified todoID.
     filter = "todoID"
     response = dynamo.query(
-        #TableName=os.environ['TODOFILES_TABLE'],
-        TableName="TodoFilesTable-todo-houessou-com-attachments-service",
+        TableName=os.environ['TODOFILES_TABLE'],
         IndexName=filter+'Index',
         KeyConditions={
             filter: {
@@ -171,8 +168,7 @@ def getTodosFiles(todoID):
 
 def deleteTodo(todoID):
     response = dynamo.delete_item(
-        #TableName=os.environ['TODO_TABLE'],
-        TableName="TodoTable-todo-houessou-com",
+        TableName=os.environ['TODO_TABLE'],
         Key={
             'todoID': {
                 'S': todoID
@@ -196,8 +192,7 @@ def deleteTodoFilesDynamo(todoID):
         for file in files:
             fileID = file["fileID"]
             dynamo.delete_item(
-                #TableName=os.environ['TODOFILES_TABLE'],
-                TableName="TodoFilesTable-todo-houessou-com-attachments-service",
+                TableName=os.environ['TODOFILES_TABLE'],
                 Key={
                     'fileID': {
                         'S': fileID
@@ -241,8 +236,7 @@ def addTodo(userID, eventBody):
         }
 
     response = client.put_item(
-        #TableName=os.environ['TODO_TABLE'],
-        TableName="TodoTable-todo-houessou-com",
+        TableName=os.environ['TODO_TABLE'],
         Item=todo
         ) 
     logger.info(response)   
@@ -257,8 +251,7 @@ def addTodo(userID, eventBody):
 #completeTodo
 def completeTodo(todoID):
     response = client.update_item(
-        #TableName=os.environ['TODO_TABLE'],
-        TableName="TodoTable-todo-houessou-com",
+        TableName=os.environ['TODO_TABLE'],
         Key={
             'todoID': {
                 'S': todoID
@@ -275,8 +268,7 @@ def completeTodo(todoID):
 #addTodoNotes
 def addTodoNotes(todoID, notes):
     response = client.update_item(
-        #TableName=os.environ['TODO_TABLE'],
-        TableName="TodoTable-todo-houessou-com",
+        TableName=os.environ['TODO_TABLE'],
         Key={
             'todoID': {
                 'S': todoID

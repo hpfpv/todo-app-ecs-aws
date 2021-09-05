@@ -1,0 +1,93 @@
+{
+    "containerDefinitions": [
+        {
+            "name": "todo-houessou-com-ecs-Service",
+            "image": "601091111123.dkr.ecr.us-east-1.amazonaws.com/todo-houessou-com-ecs/todo-main-service:latest",
+            "cpu": 10,
+            "memory": 300,
+            "links": [],
+            "portMappings": [
+                {
+                    "containerPort": 8080,
+                    "hostPort": 8080,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "entryPoint": [],
+            "command": [],
+            "environment": [
+                {
+                    "name": "ENV TODO_TABLE",
+                    "value": "TodoTable-todo-houessou-com"
+                },
+                {
+                    "name": "TODOFILES_TABLE",
+                    "value": "TodoFilesTable-todo-houessou-com-attachments-service"
+                },
+                {
+                    "name": "TODOFILES_BUCKET",
+                    "value": "hpf-todo-app-files"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [],
+            "dnsServers": [],
+            "dnsSearchDomains": [],
+            "extraHosts": [],
+            "dockerSecurityOptions": [],
+            "dockerLabels": {},
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "todo-houessou-com-ecs-logs",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "todo-houessou-com-ecs-service"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "todo-houessou-com-ecs-task-definition",
+    "executionRoleArn": "todo-houessou-com-ecs-EcsServiceRole",
+    "taskRoleArn": "todo-houessou-com-ecs-ECSTaskRole",
+    "networkMode": "awsvpc",
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.17"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2"
+    ]
+}
