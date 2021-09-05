@@ -724,18 +724,10 @@ Outputs:
     Value: !Ref 'PublicSubnetOne'
     Export:
       Name: !Sub "${AWS::StackName}-PublicSubnetOne"
-  PublicSubnetTwo:
-    Value: !Ref 'PublicSubnetTwo'
-    Export:
-      Name: !Sub "${AWS::StackName}-PublicSubnetTwo"
   PrivateSubnetOne:
     Value: !Ref 'PrivateSubnetOne'
     Export:
       Name: !Sub "${AWS::StackName}-PrivateSubnetOne"
-  PrivateSubnetTwo:
-    Value: !Ref 'PrivateSubnetTwo'
-    Export:
-      Name: !Sub "${AWS::StackName}-PrivateSubnetTwo"
   EcsContainerSecurityGroup:
     Value: !Ref 'EcsContainerSecurityGroup'
     Export:
