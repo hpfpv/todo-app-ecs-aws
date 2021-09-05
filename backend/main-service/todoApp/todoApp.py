@@ -96,7 +96,7 @@ def healthCheck():
     response = {
         "info": "Nothing here. Health checks only!"
     }
-    flaskResponse = Response(json.loads(response))
+    flaskResponse = Response(json.dumps(response))
     flaskResponse.success = True
     flaskResponse.headers["Content-Type"] = "application/json"
     flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
