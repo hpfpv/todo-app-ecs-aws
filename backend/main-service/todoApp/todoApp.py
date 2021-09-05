@@ -89,11 +89,11 @@ def addTodoNotes(userID, todoID):
 
     return flaskResponse
 
-#route for health checks only
+#route for health checks only.
 @app.route('/', methods=['GET'])
 def healthCheck():
         
-    flaskResponse = Response({})
+    flaskResponse = Response({"Info":"Nothing here. Health checks only!"})
     flaskResponse.success = True
     flaskResponse.headers["Content-Type"] = "application/json"
     flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
