@@ -573,7 +573,8 @@ Resources:
               - |+
 
   TodoEcsApi:
-    Type: AWS::Serverless::HttpApi
+    Type: AWS::Serverless::Api
+    DependsOn: ECSALB
     Properties:
       StageName: dev
       DefinitionBody: 
