@@ -4,7 +4,7 @@ on:
   push:
       branches: [ main ]
       paths:
-        - 'backend/core-resources/**'
+        - 'backend/core-resources/core-resources.yaml'
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
