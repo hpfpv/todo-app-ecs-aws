@@ -48,16 +48,29 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
       
-      - name: Update Image and register n ewtask definition
+      - name: Download task definition
         env:
             TASK_DEFINITION_FAMILY: ${{ secrets.TASK_DEFINITION_FAMILY }}
-            REGION: ${{ secrets.AWS_REGION }}
-            NEW_IMAGE: ${{ steps.build-image.outputs.image }}
-            ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
-            ECS_SERVICE: ${{ secrets.ECS_SERVICE}}
         run: |
-          TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition "$TASK_DEFINITION_FAMILY" --region $REGION)
-          NEW_TASK_DEFINITION=$(echo $TASK_DEFINITION | jq --arg IMAGE "$NEW_IMAGE" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities)')
-          NEW_TASK_INFO=$(aws ecs register-task-definition --region $REGION --cli-input-json "$NEW_TASK_DEFINTIION")
-          NEW_REVISION=$(echo $NEW_TASK_INFO | jq '.taskDefinition.revision')
-          aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_SERVICE --task-definition ${TASK_DEFINITION_FAMILY}:${NEW_REVISION}
+          aws ecs describe-task-definition --task-definition $TASK_DEFINITION_FAMILY --query taskDefinition > old-task-definition.json
+          echo old-task-definition.json | jq --arg IMAGE "$ECR_IMAGE" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities)') >task-definition.json
+      
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: ${{ secrets.CONTAINER_NAME }} 
+          image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy to Amazon ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ secrets.ECS_SERVICE}} 
+          cluster: ${{ secrets.ECS_CLUSTER }} 
+          wait-for-service-stability: true
+
+
+
+    
