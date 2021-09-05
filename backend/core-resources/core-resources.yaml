@@ -349,7 +349,7 @@ Resources:
     Type: 'AWS::ECS::TaskDefinition'
     Properties:
       Family: !Join [ '-', [ !Ref 'AWS::StackName', 'task-definition'] ]
-      NetworkMode: 'awsvpc'
+      #NetworkMode: 'awsvpc'
       ExecutionRoleArn: !Ref EcsServiceRole
       TaskRoleArn: !Ref ECSTaskRole
       ContainerDefinitions:
@@ -385,14 +385,14 @@ Resources:
         MaximumPercent: 200
         MinimumHealthyPercent: 100
       DesiredCount: 1
-      NetworkConfiguration: 
-        AwsvpcConfiguration:
-          AssignPublicIp: "DISABLED"
-          SecurityGroups: 
-            - !Ref EcsContainerSecurityGroup
-          Subnets: 
-            - !Ref PrivateSubnetOne
-            - !Ref PrivateSubnetTwo
+      #NetworkConfiguration: 
+      #  AwsvpcConfiguration:
+      #    AssignPublicIp: "DISABLED"
+      #    SecurityGroups: 
+      #      - !Ref EcsContainerSecurityGroup
+      #    Subnets: 
+      #      - !Ref PrivateSubnetOne
+      #      - !Ref PrivateSubnetTwo
       LoadBalancers:
         - ContainerName: todo-houessou-com-ecs-Service
           ContainerPort: 8080
