@@ -321,8 +321,10 @@ Resources:
       #NetworkMode: 'awsvpc'
       ExecutionRoleArn: !Ref EcsServiceRole
       TaskRoleArn: !Ref ECSTaskRole
+      RequiresCompatibilities: 
+        EC2
       ContainerDefinitions:
-        - Name: todo-houessou-com-ecs-Service
+        - Name: !Join [ '-', [ !Ref 'AWS::StackName', 'Service'] ]
           Cpu: '10'
           Essential: 'true'
           Image: !Join [ '', [!Ref "AWS::AccountId", ".dkr.ecr.", !Ref 'AWS::Region', '.amazonaws.com/todo-houessou-com-ecs/todo-main-service:latest']]
