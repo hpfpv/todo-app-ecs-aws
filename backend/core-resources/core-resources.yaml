@@ -41,16 +41,16 @@ Resources:
       CidrBlock: !FindInMap ['SubnetConfig', 'PublicOne', 'CIDR']
       MapPublicIpOnLaunch: true
 
-  #PublicSubnetTwo:
-  #  Type: AWS::EC2::Subnet
-  #  Properties:
-  #    AvailabilityZone:
-  #       Fn::Select:
-  #       - 1
-  #       - Fn::GetAZs: {Ref: 'AWS::Region'}
-  #    VpcId: !Ref VPC
-  #    CidrBlock: !FindInMap ['SubnetConfig', 'PublicTwo', 'CIDR']
-  #    MapPublicIpOnLaunch: true
+  PublicSubnetTwo:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone:
+         Fn::Select:
+         - 1
+         - Fn::GetAZs: {Ref: 'AWS::Region'}
+      VpcId: !Ref VPC
+      CidrBlock: !FindInMap ['SubnetConfig', 'PublicTwo', 'CIDR']
+      MapPublicIpOnLaunch: true
 
   PrivateSubnetOne:
     Type: AWS::EC2::Subnet
@@ -100,11 +100,11 @@ Resources:
       SubnetId: !Ref PublicSubnetOne
       RouteTableId: !Ref PublicRouteTable
 
-  #PublicSubnetTwoRouteTableAssociation:
-  #  Type: AWS::EC2::SubnetRouteTableAssociation
-  #  Properties:
-  #    SubnetId: !Ref PublicSubnetTwo
-  #    RouteTableId: !Ref PublicRouteTable
+  PublicSubnetTwoRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetTwo
+      RouteTableId: !Ref PublicRouteTable
 
   NatGatewayOneAttachment:
     Type: AWS::EC2::EIP
@@ -379,6 +379,7 @@ Resources:
           Value: '30'
       Subnets: 
         - !Ref 'PublicSubnetOne'
+        - !Ref 'PublicSubnetTwo'
       SecurityGroups:
         - !Ref ALBSecurityGroup
 
@@ -724,6 +725,10 @@ Outputs:
     Value: !Ref 'PublicSubnetOne'
     Export:
       Name: !Sub "${AWS::StackName}-PublicSubnetOne"
+  PublicSubnetTwo:
+    Value: !Ref 'PublicSubnetTwo'
+    Export:
+      Name: !Sub "${AWS::StackName}-PublicSubnetTwo"
   PrivateSubnetOne:
     Value: !Ref 'PrivateSubnetOne'
     Export:
