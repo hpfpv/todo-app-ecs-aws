@@ -54,6 +54,6 @@ jobs:
             REGION: ${{ secrets.AWS_REGION }}
             NEW_IMAGE: ${{ steps.build-image.outputs.image }}
         run: |
-          TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition $TASK_DEFINITION_FAMILY --region "$REGION")
-          NEW_TASK_DEFINITION=$(echo $TASK_DEFINITION | jq --arg IMAGE "$NEW_IMAGE" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities)')
-          aws ecs register-task-definition --region "$REGION" --cli-input-json "$NEW_TASK_DEFINTIION"
+          TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition $TASK_DEFINITION_FAMILY --region $REGION)
+          NEW_TASK_DEFINITION=$(echo $TASK_DEFINITION | jq --arg IMAGE "$NEW_IMAGE" '.taskDefinition | .containerDefinitions[0].image = $NEW_IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities)')
+          aws ecs register-task-definition --region $REGION --cli-input-json "$NEW_TASK_DEFINTIION"
