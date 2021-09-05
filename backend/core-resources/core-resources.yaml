@@ -580,6 +580,7 @@ Resources:
         openapi: "3.0.1"
         info:
           title: !Ref AWS::StackName
+          version: "1.0"
         paths:
           /:
             get:
@@ -589,7 +590,7 @@ Resources:
               x-amazon-apigateway-integration:
                 type: "HTTP_PROXY"
                 httpMethod: "GET"
-                uri: !Join [ '', [!GetAtt 'ECSALB.DNSName','/'] ]
+                uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName', '/' ]]
                 connectionType: "INTERNET"
           /{userID}/todos:
             get:
@@ -602,7 +603,7 @@ Resources:
                 payloadFormatVersion: "2.0"
                 type: "HTTP_PROXY"
                 httpMethod: "POST"
-                uri: !Join [ '', [!GetAtt 'ECSALB.DNSName','/{userID}/todos'] ]
+                uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos'] ]
                 connectionType: "INTERNET"
           /{userID}/todos/{todoID}:
             get:
@@ -615,7 +616,7 @@ Resources:
                 payloadFormatVersion: "2.0"
                 type: "HTTP_PROXY"
                 httpMethod: "POST"
-                uri: !Join [ '', [!GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}'] ]
+                uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}'] ]
                 connectionType: "INTERNET"
           /{userID}/todos/add:
             post:
@@ -628,7 +629,7 @@ Resources:
                 payloadFormatVersion: "2.0"
                 type: "HTTP_PROXY"
                 httpMethod: "POST"
-                uri: !Join [ '', [!GetAtt 'ECSALB.DNSName','/{userID}/todos/add'] ]
+                uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos/add'] ]
                 connectionType: "INTERNET"
           /{userID}/todos/{todoID}/delete:
             delete:
@@ -640,7 +641,7 @@ Resources:
               x-amazon-apigateway-integration:
                 type: "HTTP_PROXY"
                 httpMethod: "POST"
-                uri: !Join [ '', [!GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}/delete'] ]
+                uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}/delete'] ]
                 connectionType: "INTERNET"
           /{userID}/todos/{todoID}/addnotes:
             post:
@@ -653,7 +654,7 @@ Resources:
                 payloadFormatVersion: "2.0"
                 type: "HTTP_PROXY"
                 httpMethod: "POST"
-                uri: !Join [ '', [!GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}/addnotes'] ]
+                uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}/addnotes'] ]
                 connectionType: "INTERNET"
           /{userID}/todos/{todoID}/complete:
             post:
@@ -666,7 +667,7 @@ Resources:
                 payloadFormatVersion: "2.0"
                 type: "HTTP_PROXY"
                 httpMethod: "POST"
-                uri: !Join [ '', [!GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}/complete'] ]
+                uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}/complete'] ]
                 connectionType: "INTERNET"
         components:
           securitySchemes:
