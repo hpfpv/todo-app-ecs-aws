@@ -683,6 +683,8 @@ Resources:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
                       method.response.header.Access-Control-Allow-Methods: "'*'"
                       method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
+                requestParameters:
+                  integration.request.path.userID: method.request.path.userID
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos'] ]
                 connectionType: "INTERNET"
             options:
@@ -757,6 +759,9 @@ Resources:
                       method.response.header.Access-Control-Allow-Methods: "'*'"
                       method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}'] ]
+                requestParameters:
+                  integration.request.path.userID: method.request.path.userID
+                  integration.request.path.todoID: method.request.path.todoID
                 connectionType: "INTERNET"
             options:
               summary: CORS support
@@ -825,6 +830,8 @@ Resources:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
                       method.response.header.Access-Control-Allow-Methods: "'*'"
                       method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
+                requestParameters:
+                  integration.request.path.userID: method.request.path.userID
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos/add'] ]
                 connectionType: "INTERNET"
             options:
@@ -897,6 +904,9 @@ Resources:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
                       method.response.header.Access-Control-Allow-Methods: "'*'"
                       method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
+                requestParameters:
+                  integration.request.path.userID: method.request.path.userID
+                  integration.request.path.todoID: method.request.path.todoID
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}/delete'] ]
                 connectionType: "INTERNET"
             options:
@@ -970,6 +980,9 @@ Resources:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
                       method.response.header.Access-Control-Allow-Methods: "'*'"
                       method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
+                requestParameters:
+                  integration.request.path.userID: method.request.path.userID
+                  integration.request.path.todoID: method.request.path.todoID
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}/addnotes'] ]
                 connectionType: "INTERNET"
             options:
@@ -1043,6 +1056,9 @@ Resources:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
                       method.response.header.Access-Control-Allow-Methods: "'*'"
                       method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
+                requestParameters:
+                  integration.request.path.userID: method.request.path.userID
+                  integration.request.path.todoID: method.request.path.todoID
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}/complete'] ]
                 connectionType: "INTERNET"
             options:
