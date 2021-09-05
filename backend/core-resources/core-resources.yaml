@@ -397,7 +397,7 @@ Resources:
         - ContainerName: todo-houessou-com-ecs-Service
           ContainerPort: 8080
           TargetGroupArn: !Ref ECSTG
-      #Role: !Ref EcsServiceRole
+      Role: !Ref EcsServiceRole
       TaskDefinition: !Ref 'EcsTaskDefinition'
 
   ECSALB:
@@ -452,7 +452,6 @@ Resources:
       Port: 8080
       Protocol: HTTP
       UnhealthyThresholdCount: 2
-      TargetType: 'ip'
       VpcId: !Ref VPC
 
   ECSAutoScalingGroup:
