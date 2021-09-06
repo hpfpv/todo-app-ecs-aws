@@ -395,7 +395,7 @@ Resources:
         - ContainerName: !Join [ '-', [ !Ref 'AWS::StackName', 'files-service'] ]
           ContainerPort: 8081
           TargetGroupArn: !Ref ECSTGFiles
-      Role: !Ref EcsServiceRole
+      #Role: !Ref EcsServiceRole
       TaskDefinition: !Ref 'EcsTaskDefinition'
 
   ECSALB:
