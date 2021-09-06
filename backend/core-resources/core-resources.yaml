@@ -391,10 +391,10 @@ Resources:
       LoadBalancers:
         - ContainerName: !Join [ '-', [ !Ref 'AWS::StackName', 'main-service'] ]
           ContainerPort: 8080
-          TargetGroupArn: !Ref ECSTG
+          TargetGroupArn: !Ref ECSTGMain
         - ContainerName: !Join [ '-', [ !Ref 'AWS::StackName', 'files-service'] ]
           ContainerPort: 8081
-          TargetGroupArn: !Ref ECSTG
+          TargetGroupArn: !Ref ECSTGFiles
       Role: !Ref EcsServiceRole
       TaskDefinition: !Ref 'EcsTaskDefinition'
 
