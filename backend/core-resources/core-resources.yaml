@@ -1453,7 +1453,11 @@ Outputs:
     Value: !Join [ '', [ !GetAtt 'ECSALB.DNSName' ]]
     Export:
       Name: !Sub "${AWS::StackName}-ECSALB"
-  TodoEcsApi:
+  TodoEcsMainApi:
+    Value: !Join [ '', ['https://', !Ref TodoEcsApi, '.execute-api.us-east-1.amazonaws.com/dev'] ]
+    Export:
+      Name: !Sub "${AWS::StackName}-TodoEcsApiURL"
+  TodoEcsFilesApi:
     Value: !Join [ '', ['https://', !Ref TodoEcsApi, '.execute-api.us-east-1.amazonaws.com/dev'] ]
     Export:
       Name: !Sub "${AWS::StackName}-TodoEcsApiURL"
