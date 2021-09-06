@@ -41,7 +41,6 @@ def getTodoFiles(todoID):
 
     return flaskResponse
 
-
 # route for add todo files
 @app.route('/<todoID>/files/upload', methods=['POST'])
 def addTodoFiles(todoID):
