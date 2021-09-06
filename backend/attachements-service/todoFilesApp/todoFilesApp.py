@@ -35,7 +35,7 @@ def getTodoFiles(todoID):
 
     logger.info(response)
 
-    flaskResponse = Response(json.dumps(response))
+    flaskResponse = Response(response)
     flaskResponse.headers["Content-Type"] = "application/json"
     flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com','https://todo.houessou.com'"
 
