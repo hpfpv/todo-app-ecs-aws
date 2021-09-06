@@ -1,10 +1,10 @@
-name: Build and deploy main-service 
+name: Build and deploy attachements-service 
 
 on:
   push:
       branches: [ main ]
       paths:
-        - 'backend/main-service/**'
+        - 'backend/attachements-service/**'
 
 defaults:
   run:
@@ -38,9 +38,9 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REGION: ${{ secrets.AWS_REGION }}
-          ECR_REPOSITORY: ${{ secrets.MAIN_SERVICE_ECR_REPOSITORY }}
+          ECR_REPOSITORY: ${{ secrets.FILES_SERVICE_ECR_REPOSITORY }}
           IMAGE_TAG: ${{ github.sha }}
-        working-directory: ./backend/main-service
+        working-directory: ./backend/attachements-service
         run: |
           # Build a docker container and
           # push it to ECR so that it can
@@ -60,7 +60,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: task-definition.json
-          container-name: ${{ secrets.MAIN_SERVICE_CONTAINER_NAME }} 
+          container-name: ${{ secrets.FILES_SERVICE_CONTAINER_NAME }} 
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy to Amazon ECS

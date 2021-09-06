@@ -10,6 +10,22 @@ logger.setLevel(logging.INFO)
 app = Flask(__name__)
 CORS(app)
 
+#route for health checks only.
+@app.route('/', methods=['GET'])
+def healthCheck():
+        
+    response = {
+        "info": "Nothing here. Health checks only!"
+    }
+    flaskResponse = Response(json.dumps(response))
+    flaskResponse.status = "success"
+    flaskResponse.status_code = 200
+    flaskResponse.headers["Content-Type"] = "application/json"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com','https://todo.houessou.com'"
+
+    return flaskResponse
+
+
 @app.route('/<userID>/todos', methods=['GET'])
 def getTodos(userID):
     if (request.args.get('search')):
@@ -24,7 +40,7 @@ def getTodos(userID):
 
     flaskResponse = Response(json.dumps(response))
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com','https://todo.houessou.com'"
 
     return flaskResponse
 
@@ -35,7 +51,7 @@ def getTodo(userID, todoID):
 
     flaskResponse = Response(response)
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com','https://todo.houessou.com'"
 
     return flaskResponse
     
@@ -47,9 +63,10 @@ def deleteTodo(userID, todoID):
     todoService.deleteTodo(todoID)
     
     flaskResponse = Response({})
-    flaskResponse.success = True
+    flaskResponse.status = "success"
+    flaskResponse.status_code = 200
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com','https://todo.houessou.com'"
 
     return flaskResponse
 
@@ -59,9 +76,10 @@ def addTodo(userID):
     response = todoService.addTodo(userID, eventBody)
 
     flaskResponse = Response(response)
-    flaskResponse.success = True
+    flaskResponse.status = "success"
+    flaskResponse.status_code = 200
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com','https://todo.houessou.com'"
 
     return flaskResponse
 
@@ -71,7 +89,7 @@ def completeTodo(userID, todoID):
 
     flaskResponse = Response(response)
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com','https://todo.houessou.com'"
 
     return flaskResponse
 
@@ -85,23 +103,10 @@ def addTodoNotes(userID, todoID):
 
     flaskResponse = Response(response)
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com','https://todo.houessou.com'"
 
     return flaskResponse
 
-#route for health checks only.
-@app.route('/', methods=['GET'])
-def healthCheck():
-        
-    response = {
-        "info": "Nothing here. Health checks only!"
-    }
-    flaskResponse = Response(json.dumps(response))
-    flaskResponse.success = True
-    flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
-
-    return flaskResponse
 
 
 if __name__ == "__main__":

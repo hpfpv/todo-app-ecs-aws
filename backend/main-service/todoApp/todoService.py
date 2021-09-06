@@ -8,9 +8,16 @@ import re
 import uuid
 from datetime import datetime
 
-client = boto3.client('dynamodb', region_name='us-east-1')
+dynamo = boto3.client('dynamodb', region_name='us-east-1')
+s3 = boto3.resource('s3')
+
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
+
+bucket = os.environ['TODOFILES_BUCKET']
+bucketCDN = os.environ['TODOFILES_BUCKET_CDN']
+todotable = os.environ['TODO_TABLE']
+filestable = os.environ['TODOFILES_TABLE']
 
 #getTodos
 def getTodosJson(items):
@@ -35,8 +42,8 @@ def getTodos(userID):
     # Use the DynamoDB API Query to retrieve todos from the table that belong
     # to the specified userID.
     filter = "userID"
-    response = client.query(
-        TableName=os.environ['TODO_TABLE'],
+    response = dynamo.query(
+        TableName=todotable,
         IndexName=filter+'Index',
         KeyConditions={
             filter: {
@@ -110,8 +117,8 @@ def getTodoJson(item):
     return todo
 
 def getTodo(todoID):
-    response = client.get_item(
-        TableName=os.environ['TODO_TABLE'],
+    response = dynamo.get_item(
+        TableName=todotable,
         Key={
             'todoID': {
                 'S': todoID
@@ -122,13 +129,6 @@ def getTodo(todoID):
     return json.dumps(response)
 
 #deleteTodo
-dynamo = boto3.client('dynamodb', region_name='us-east-1')
-s3 = boto3.resource('s3')
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-
-bucket = s3.Bucket(os.environ['TODOFILES_BUCKET'])
-
 def getFilesJson(items):
     # loop through the returned todos and add their attributes to a new dict
     # that matches the JSON response structure expected by the frontend.
@@ -148,7 +148,7 @@ def getTodosFiles(todoID):
     # to the specified todoID.
     filter = "todoID"
     response = dynamo.query(
-        TableName=os.environ['TODOFILES_TABLE'],
+        TableName=filestable,
         IndexName=filter+'Index',
         KeyConditions={
             filter: {
@@ -168,7 +168,7 @@ def getTodosFiles(todoID):
 
 def deleteTodo(todoID):
     response = dynamo.delete_item(
-        TableName=os.environ['TODO_TABLE'],
+        TableName=todotable,
         Key={
             'todoID': {
                 'S': todoID
@@ -192,7 +192,7 @@ def deleteTodoFilesDynamo(todoID):
         for file in files:
             fileID = file["fileID"]
             dynamo.delete_item(
-                TableName=os.environ['TODOFILES_TABLE'],
+                TableName=filestable,
                 Key={
                     'fileID': {
                         'S': fileID
@@ -207,7 +207,6 @@ def deleteTodoFilesDynamo(todoID):
 
 #addTodo
 def addTodo(userID, eventBody):
-    client = boto3.client('dynamodb', region_name='us-east-1')
     dateTimeObj = datetime.now()
     todo = {}
     todo["todoID"] = {
@@ -235,8 +234,8 @@ def addTodo(userID, eventBody):
         "BOOL": False
         }
 
-    response = client.put_item(
-        TableName=os.environ['TODO_TABLE'],
+    response = dynamo.put_item(
+        TableName=todotable,
         Item=todo
         ) 
     logger.info(response)   
@@ -250,8 +249,8 @@ def addTodo(userID, eventBody):
 
 #completeTodo
 def completeTodo(todoID):
-    response = client.update_item(
-        TableName=os.environ['TODO_TABLE'],
+    response = dynamo.update_item(
+        TableName=todotable,
         Key={
             'todoID': {
                 'S': todoID
@@ -267,8 +266,8 @@ def completeTodo(todoID):
 
 #addTodoNotes
 def addTodoNotes(todoID, notes):
-    response = client.update_item(
-        TableName=os.environ['TODO_TABLE'],
+    response = dynamo.update_item(
+        TableName=todotable,
         Key={
             'todoID': {
                 'S': todoID

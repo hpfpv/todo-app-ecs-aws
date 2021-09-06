@@ -3,7 +3,7 @@ RUN pip3 install --upgrade pip
 RUN mkdir -p /todoFilesApp
 COPY ./todoFilesApp /todoFilesApp
 WORKDIR /todoFilesApp
-RUN pip3 install -r ./requirements.txt
-EXPOSE 8080
+#RUN pip3 install -r ./requirements.txt
+EXPOSE 8081
 ENTRYPOINT [ "python" ]
 CMD [ "-u", "todoFilesApp.py" ] 

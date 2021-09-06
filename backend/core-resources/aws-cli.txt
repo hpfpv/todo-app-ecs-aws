@@ -1,16 +1,23 @@
 # Docker image and ECR repo
-## Build the docker image
+## Build the docker image for main service | amke sure to be in the right directory
 docker build . -t ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/todo-houessou-com-ecs/todo-main-service:1
 
-## Create ECR repository
-aws ecr create-repository --repository-name todo-houessou-com-ecs/todo-main-service
+## Build the docker image for main service
+docker build . -t ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/todo-houessou-com-ecs/todo-files-service:1
 
 ## authenticate to ECR
 $(aws ecr get-login --no-include-email) or
 aws ecr get-login-password | docker login --username AWS --password-stdin ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/repository
 
-## push the docker image to ECR
+## Create ECR repository for main service
+aws ecr create-repository --repository-name todo-houessou-com-ecs/todo-main-service
+
+## Create ECR repository for files service
+aws ecr create-repository --repository-name todo-houessou-com-ecs/todo-files-service
+
+## Push the docker images to ECR repository
 docker push ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/todo-houessou-com-ecs/todo-main-service:1
+docker push ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/todo-houessou-com-ecs/todo-files-service:1
 
 
 # Create the core resources using SAM

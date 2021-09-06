@@ -2,134 +2,22 @@ import boto3
 import json
 import os
 import logging
-from collections import defaultdict
-from boto3.dynamodb.conditions import Key
-import re
 import uuid
-from datetime import datetime
+from collections import defaultdict
+from botocore.exceptions import ClientError
 
-client = boto3.client('dynamodb', region_name='us-east-1')
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-
-#getTodos
-def getTodosJson(items):
-    # loop through the returned todos and add their attributes to a new dict
-    # that matches the JSON response structure expected by the frontend.
-    todoList = defaultdict(list)
-
-    for item in items:
-        todo = {}
-        todo["todoID"] = item["todoID"]["S"]
-        todo["userID"] = item["userID"]["S"]
-        todo["dateCreated"] = item["dateCreated"]["S"]
-        todo["title"] = item["title"]["S"]
-        todo["description"] = item["description"]["S"]
-        todo["notes"] = item["notes"]["S"]
-        todo["dateDue"] = item["dateDue"]["S"]
-        todo["completed"] = item["completed"]["BOOL"]
-        todoList["todos"].append(todo)
-    return todoList
- 
-def getTodos(userID):
-    # Use the DynamoDB API Query to retrieve todos from the table that belong
-    # to the specified userID.
-    filter = "userID"
-    response = client.query(
-        TableName=os.environ['TODO_TABLE'],
-        IndexName=filter+'Index',
-        KeyConditions={
-            filter: {
-                'AttributeValueList': [
-                    {
-                        'S': userID
-                    }
-                ],
-                'ComparisonOperator': "EQ"
-            }
-        }
-    )
-    logging.info(response["Items"])
-    todoList = getTodosJson(response["Items"])
-    items = json.dumps(todoList)
-    data = json.loads(items)
-    response = defaultdict(list)
-    sortedData1 = sorted(data["todos"], key = lambda i: i["dateCreated"], reverse=True)
-    sortedData2 = sorted(sortedData1, key = lambda i: i["dateDue"])
-    sortedData3 = sorted(sortedData2, key = lambda i: i["completed"])
-    response = defaultdict(list)
-
-    for item in sortedData3:
-        todo = {}
-        todo["todoID"] = item["todoID"]
-        todo["userID"] = item["userID"]
-        todo["dateCreated"] = item["dateCreated"]
-        todo["title"] = item ["title"]
-        todo["description"] = item["description"]
-        todo["notes"] = item["notes"]
-        todo["dateDue"] = item["dateDue"]
-        todo["completed"] = item["completed"]
-
-        response["todos"].append(todo)
-    logger.info(response)
-    return response
-
-def getSearchedTodos(userID, filter):
-    items = getTodos(userID)
-    data = items
-    response = defaultdict(list)
-    
-    for item in data["todos"]:
-        todo = {}
-        if re.search(filter, item["title"], re.IGNORECASE): 
-            todo["todoID"] = item["todoID"]
-            todo["userID"] = item["userID"]
-            todo["dateCreated"] = item["dateCreated"]
-            todo["title"] = item ["title"]
-            todo["description"] = item["description"]
-            todo["notes"] = item["notes"]
-            todo["dateDue"] = item["dateDue"]
-            todo["completed"] = item["completed"]
-            response["todos"].append(todo)
-    
-    logging.info(response)
-    return response
-
-#getTodo
-def getTodoJson(item):
-    todo = {}
-    todo["todoID"] = item["todoID"]["S"]
-    todo["userID"] = item["userID"]["S"]
-    todo["dateCreated"] = item["dateCreated"]["S"]
-    todo["title"] = item["title"]["S"]
-    todo["description"] = item["description"]["S"]
-    todo["notes"] = item["notes"]["S"]
-    todo["dateDue"] = item["dateDue"]["S"]
-    todo["completed"] = item["completed"]["BOOL"]
-
-    return todo
-
-def getTodo(todoID):
-    response = client.get_item(
-        #TableName=os.environ['TODO_TABLE'],
-        TableName="TodoTable-todo-houessou-com",
-        Key={
-            'todoID': {
-                'S': todoID
-            }
-        }
-    )
-    response = getTodoJson(response["Item"])
-    return json.dumps(response)
-
-#deleteTodo
 dynamo = boto3.client('dynamodb', region_name='us-east-1')
 s3 = boto3.resource('s3')
+
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-#bucket = s3.Bucket(os.environ['TODOFILES_BUCKET'])
-bucket = "hpf-todo-app-files"
+bucket = os.environ['TODOFILES_BUCKET']
+bucketCDN = os.environ['TODOFILES_BUCKET_CDN']
+todotable = os.environ['TODO_TABLE']
+filestable = os.environ['TODOFILES_TABLE']
+
+# get todo files
 def getFilesJson(items):
     # loop through the returned todos and add their attributes to a new dict
     # that matches the JSON response structure expected by the frontend.
@@ -149,8 +37,7 @@ def getTodosFiles(todoID):
     # to the specified todoID.
     filter = "todoID"
     response = dynamo.query(
-        #TableName=os.environ['TODOFILES_TABLE'],
-        TableName="TodoFilesTable-todo-houessou-com-attachments-service",
+        TableName=filestable,
         IndexName=filter+'Index',
         KeyConditions={
             filter: {
@@ -168,83 +55,40 @@ def getTodosFiles(todoID):
     return json.dumps(fileList)
 
 
-def deleteTodo(todoID):
-    response = dynamo.delete_item(
-        #TableName=os.environ['TODO_TABLE'],
-        TableName="TodoTable-todo-houessou-com",
-        Key={
-            'todoID': {
-                'S': todoID
-            }
-        }
-    )
-    logging.info(f"{todoID} deleted")
-    return response
+# add todo files
+def addTodoFiles(todoID, eventBody):
+    logger.info(eventBody)
+    
+    fileName = eventBody["fileName"]
+    fileID = str(uuid.uuid4())
+    filePath = eventBody["filePath"]
+    fileKey = str(filePath).replace(f'https://{bucket}/.s3.amazonaws.com/','')
+    filePathCDN = 'https://' + bucketCDN + '/' + filePath
+    fileForDynamo = {}
+    fileForDynamo["fileID"] =  {
+        "S": fileID
+    }
+    fileForDynamo["todoID"] =  {
+        "S": todoID
+    }
+    fileForDynamo["fileName"] =  {
+        "S": fileName
+    }
+    fileForDynamo["filePath"] =  {
+        "S": filePathCDN
+    }
 
-def deleteTodoFilesS3(userID, todoID):
-    prefix = userID + "/" + todoID + "/"
-    for key in bucket.objects.filter(Prefix=prefix):
-        key.delete()
-        logging.info(f"{key} deleted")
-    return (f"{todoID} files deleted from s3")
-
-def deleteTodoFilesDynamo(todoID):
-    data = json.loads(getTodosFiles(todoID))
-    if data :
-        files = data["files"]
-        for file in files:
-            fileID = file["fileID"]
-            dynamo.delete_item(
-                #TableName=os.environ['TODOFILES_TABLE'],
-                TableName="TodoFilesTable-todo-houessou-com-attachments-service",
-                Key={
-                    'fileID': {
-                        'S': fileID
-                    }
-                }
-            )
-            logging.info(f"{fileID} deleted")
-        return (f"{todoID} files deleted from dynamoDB")
-    else:
-        logging.info(f"{todoID}: no files to delete")
-        return (f"{todoID}: no files to delete")
-
-#addTodo
-def addTodo(userID, eventBody):
-    client = boto3.client('dynamodb', region_name='us-east-1')
-    dateTimeObj = datetime.now()
-    todo = {}
-    todo["todoID"] = {
-        "S": str(uuid.uuid4())
-        }
-    todo["userID"] = {
-        "S": userID
-        }
-    todo["dateCreated"] = {
-        "S": str(dateTimeObj)
-        }
-    todo["title"] = {
-        "S": eventBody["title"]
-        }    
-    todo["description"] = {
-        "S": eventBody["description"]
-        }
-    todo["notes"] = {
-        "S": ""
-        }
-    todo["dateDue"] = {
-        "S": eventBody["dateDue"]
-        }
-    todo["completed"] = {
-        "BOOL": False
-        }
-
-    response = client.put_item(
-        #TableName=os.environ['TODO_TABLE'],
-        TableName="TodoTable-todo-houessou-com",
-        Item=todo
+    logger.info(fileForDynamo)
+    try:
+        responseDB = dynamo.put_item(
+        TableName=filestable,
+        Item=fileForDynamo
         ) 
-    logger.info(response)   
+
+        logger.info(responseDB)
+    except ClientError as err:
+        logger.info(err)
+
     responseBody = {}
     responseBody["status"] = "success"
 
@@ -253,38 +97,23 @@ def addTodo(userID, eventBody):
         'body': json.dumps(responseBody)  
     }
 
-#completeTodo
-def completeTodo(todoID):
-    response = client.update_item(
-        #TableName=os.environ['TODO_TABLE'],
-        TableName="TodoTable-todo-houessou-com",
-        Key={
-            'todoID': {
-                'S': todoID
-            }
-        },
-        UpdateExpression="SET completed = :b",
-        ExpressionAttributeValues={':b': {'BOOL': True}}
+# delete todo files
+def deleteTodosFileS3(key):
+    response = s3.delete_object(
+        Bucket=bucket,
+        Key=key,
     )
-    response = {}
-    response["Update"] = "Success"
-
-    return json.dumps(response)
-
-#addTodoNotes
-def addTodoNotes(todoID, notes):
-    response = client.update_item(
-        #TableName=os.environ['TODO_TABLE'],
-        TableName="TodoTable-todo-houessou-com",
+    logging.info(f"{key} deleted from S3")
+    return response
+   
+def deleteTodosFileDynamo(fileID):
+    response = dynamo.delete_item(
+        TableName=filestable,
         Key={
-            'todoID': {
-                'S': todoID
+            'fileID': {
+                'S': fileID
             }
-        },
-        UpdateExpression="SET notes = :b",
-        ExpressionAttributeValues={':b': {'S': notes}}
+        }
     )
-    response = {}
-    response["Update"] = "Success";
-
-    return json.dumps(response)
+    logging.info(f"{fileID} deleted from DynamoDB")
+    return response
