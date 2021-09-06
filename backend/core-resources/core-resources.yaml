@@ -511,7 +511,7 @@ Resources:
   ServiceScalingPolicy:
     Type: 'AWS::ApplicationAutoScaling::ScalingPolicy'
     Properties:
-      PolicyName: todo-houessou-com-ecs-Service-ScalingPolicy
+      PolicyName: !Join [ '-', [ !Ref 'AWS::StackName', 'Service-ScalingPolicy'] ]
       PolicyType: StepScaling
       ScalingTargetId: !Ref ServiceScalingTarget
       StepScalingPolicyConfiguration:
@@ -607,7 +607,7 @@ Resources:
       ImageId: ami-03db9b2aac6af477d
       SecurityGroups:
         - !Ref EcsContainerSecurityGroup
-      InstanceType: 't2.nano'
+      InstanceType: 't2.micro'
       IamInstanceProfile: !Ref EC2InstanceProfile
       KeyName: 'todo-houessou-com-ecs-keypair'
       UserData: 
@@ -631,7 +631,7 @@ Resources:
               - |+
             
   # Rest API for main service
-  TodoEcsMainApi:
+  TodoEcsApi:
     Type: AWS::Serverless::Api
     DependsOn: ECSALB
     Properties:
@@ -1158,29 +1158,7 @@ Resources:
                       type: string
                     Access-Control-Allow-Origin:
                       type: string
-
-  # Rest API for files service
-  TodoEcsFilesApi:
-    Type: AWS::Serverless::Api
-    DependsOn: ECSALB
-    Properties:
-      StageName: dev
-      DefinitionBody: 
-        openapi: "3.0.1"
-        info:
-          title: !Join [ '-', [ !Ref 'AWS::StackName', 'files-service'] ]
-          version: "1.0"
-        securityDefinitions:
-          TodoAuthorizer:
-            type: apiKey
-            name: Authorization
-            in: header
-            x-amazon-apigateway-authtype: cognito_user_pools
-            x-amazon-apigateway-authorizer:
-              type: COGNITO_USER_POOLS
-              providerARNs:
-              - !Join [ '', ['arn:aws:cognito-idp:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':userpool/', !ImportValue todo-houessou-com-TodoUserPool]]
-        paths:
+          # paths for files service
           /{todoID}/files:
             get:
               parameters:
@@ -1212,7 +1190,7 @@ Resources:
                       method.response.header.Access-Control-Allow-Methods: "'*'"
                       method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
                 requestParameters:
-                  integration.request.path.userID: method.request.path.todoID
+                  integration.request.path.todoID: method.request.path.todoID
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{todoID}/files'] ]
                 connectionType: "INTERNET"
             options:
@@ -1357,8 +1335,8 @@ Resources:
                       method.response.header.Access-Control-Allow-Methods: "'*'"
                       method.response.header.Access-Control-Allow-Origin: "'https://todo.houessou.com','https://todo2.houessou.com'"
                 requestParameters:
-                  integration.request.path.userID: method.request.path.todoID
-                  integration.request.path.todoID: method.request.path.fileID
+                  integration.request.path.todoID: method.request.path.todoID
+                  integration.request.path.fileID: method.request.path.fileID
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{todoID}/files/{fileID}/delete'] ]
                 connectionType: "INTERNET"
             options:
@@ -1453,12 +1431,9 @@ Outputs:
     Value: !Join [ '', [ !GetAtt 'ECSALB.DNSName' ]]
     Export:
       Name: !Sub "${AWS::StackName}-ECSALB"
-  TodoEcsMainApi:
-    Value: !Join [ '', ['https://', !Ref TodoEcsMainApi, '.execute-api.us-east-1.amazonaws.com/dev'] ]
+  TodoEcsApi:
+    Value: !Join [ '', ['https://', !Ref TodoEcsApi, '.execute-api.us-east-1.amazonaws.com/dev'] ]
     Export:
-      Name: !Sub "${AWS::StackName}-TodoEcsMainApiURL"
-  TodoEcsFilesApi:
-    Value: !Join [ '', ['https://', !Ref TodoEcsFilesApi, '.execute-api.us-east-1.amazonaws.com/dev'] ]
-    Export:
-      Name: !Sub "${AWS::StackName}-TodoEcsFilesApiURL"
+      Name: !Sub "${AWS::StackName}-TodoEcsApiURL"
+
 
