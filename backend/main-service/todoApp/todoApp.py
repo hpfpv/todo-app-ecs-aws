@@ -25,7 +25,6 @@ def healthCheck():
 
     return flaskResponse
 
-
 @app.route('/<userID>/todos', methods=['GET'])
 def getTodos(userID):
     if (request.args.get('search')):
