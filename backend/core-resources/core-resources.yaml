@@ -629,8 +629,9 @@ Resources:
               - '         --region '
               - !Ref 'AWS::Region'
               - |+
-
-  TodoEcsApi:
+            
+  # Rest API for main service
+  TodoEcsMainApi:
     Type: AWS::Serverless::Api
     DependsOn: ECSALB
     Properties:
@@ -638,7 +639,7 @@ Resources:
       DefinitionBody: 
         openapi: "3.0.1"
         info:
-          title: !Ref AWS::StackName
+          title: !Join [ '-', [ !Ref 'AWS::StackName', 'main-service'] ]
           version: "1.0"
         securityDefinitions:
           TodoAuthorizer:
@@ -651,7 +652,6 @@ Resources:
               providerARNs:
               - !Join [ '', ['arn:aws:cognito-idp:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':userpool/', !ImportValue todo-houessou-com-TodoUserPool]]
         paths:
-          # Paths for main service
           /:
             get:
               responses:
@@ -1158,7 +1158,29 @@ Resources:
                       type: string
                     Access-Control-Allow-Origin:
                       type: string
-          # Paths for files service
+
+  # Rest API for files service
+  TodoEcsFilesApi:
+    Type: AWS::Serverless::Api
+    DependsOn: ECSALB
+    Properties:
+      StageName: dev
+      DefinitionBody: 
+        openapi: "3.0.1"
+        info:
+          title: !Join [ '-', [ !Ref 'AWS::StackName', 'files-service'] ]
+          version: "1.0"
+        securityDefinitions:
+          TodoAuthorizer:
+            type: apiKey
+            name: Authorization
+            in: header
+            x-amazon-apigateway-authtype: cognito_user_pools
+            x-amazon-apigateway-authorizer:
+              type: COGNITO_USER_POOLS
+              providerARNs:
+              - !Join [ '', ['arn:aws:cognito-idp:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':userpool/', !ImportValue todo-houessou-com-TodoUserPool]]
+        paths:
           /{todoID}/files:
             get:
               parameters:
