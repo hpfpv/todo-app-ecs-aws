@@ -328,7 +328,7 @@ Resources:
           Cpu: '20'
           Essential: 'true'
           Image: !Join [ '', [!Ref "AWS::AccountId", ".dkr.ecr.", !Ref 'AWS::Region', '.amazonaws.com/todo-houessou-com-ecs/todo-main-service:1']]
-          Memory: '100'
+          Memory: '200'
           LogConfiguration:
             LogDriver: awslogs
             Options:
@@ -350,7 +350,7 @@ Resources:
           Cpu: '20'
           Essential: 'false'
           Image: !Join [ '', [!Ref "AWS::AccountId", ".dkr.ecr.", !Ref 'AWS::Region', '.amazonaws.com/todo-houessou-com-ecs/todo-files-service:1']]
-          Memory: '100'
+          Memory: '200'
           LogConfiguration:
             LogDriver: awslogs
             Options:
@@ -631,7 +631,8 @@ Resources:
               - |+
             
   # Rest API for main service
-  TodoEcsApi:
+  # Rest API for main service
+  TodoEcsMainApi:
     Type: AWS::Serverless::Api
     DependsOn: ECSALB
     Properties:
@@ -1158,7 +1159,29 @@ Resources:
                       type: string
                     Access-Control-Allow-Origin:
                       type: string
-          # paths for files service
+
+  # Rest API for files service
+  TodoEcsFilesApi:
+    Type: AWS::Serverless::Api
+    DependsOn: ECSALB
+    Properties:
+      StageName: dev
+      DefinitionBody: 
+        openapi: "3.0.1"
+        info:
+          title: !Join [ '-', [ !Ref 'AWS::StackName', 'files-service'] ]
+          version: "1.0"
+        securityDefinitions:
+          TodoAuthorizer:
+            type: apiKey
+            name: Authorization
+            in: header
+            x-amazon-apigateway-authtype: cognito_user_pools
+            x-amazon-apigateway-authorizer:
+              type: COGNITO_USER_POOLS
+              providerARNs:
+              - !Join [ '', ['arn:aws:cognito-idp:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':userpool/', !ImportValue todo-houessou-com-TodoUserPool]]
+        paths:
           /{todoID}/files:
             get:
               parameters:
@@ -1431,9 +1454,12 @@ Outputs:
     Value: !Join [ '', [ !GetAtt 'ECSALB.DNSName' ]]
     Export:
       Name: !Sub "${AWS::StackName}-ECSALB"
-  TodoEcsApi:
-    Value: !Join [ '', ['https://', !Ref TodoEcsApi, '.execute-api.us-east-1.amazonaws.com/dev'] ]
+  TodoEcsMainApi:
+    Value: !Join [ '', ['https://', !Ref TodoEcsMainApi, '.execute-api.us-east-1.amazonaws.com/dev'] ]
     Export:
-      Name: !Sub "${AWS::StackName}-TodoEcsApiURL"
-
+      Name: !Sub "${AWS::StackName}-TodoEcsMainApiURL"
+  TodoEcsFilesApi:
+    Value: !Join [ '', ['https://', !Ref TodoEcsFilesApi, '.execute-api.us-east-1.amazonaws.com/dev'] ]
+    Export:
+      Name: !Sub "${AWS::StackName}-TodoEcsFilesApiURL"
 
