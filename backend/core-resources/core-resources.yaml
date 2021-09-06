@@ -460,7 +460,7 @@ Resources:
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 6
       HealthyThresholdCount: 5
-      Name: !Join [ '-', [ !Ref 'AWS::StackName', 'TG-main-service'] ]
+      Name: !Join [ '-', [ !Ref 'AWS::StackName', 'TG-main'] ]
       Port: 8080
       Protocol: HTTP
       UnhealthyThresholdCount: 2
@@ -475,7 +475,7 @@ Resources:
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 6
       HealthyThresholdCount: 5
-      Name: !Join [ '-', [ !Ref 'AWS::StackName', 'TG-files-service'] ]
+      Name: !Join [ '-', [ !Ref 'AWS::StackName', 'TG-files'] ]
       Port: 8081
       Protocol: HTTP
       UnhealthyThresholdCount: 2
