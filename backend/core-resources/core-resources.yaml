@@ -656,7 +656,7 @@ Resources:
             Principal: 
               AWS: !Sub 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${TodoEcsWebBucketOAI}'
 
-  TodoTodoEcsWebBucketCF:
+  TodoEcsWebBucketCF:
     Type: AWS::CloudFront::Distribution
     DeletionPolicy: Retain
     Properties:
