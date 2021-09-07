@@ -23,6 +23,7 @@ docker push ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com/todo-houessou-com-ecs/todo-f
 # Create the core resources using SAM
 ## Core stack
 sam build -t core-resources.yaml 
+sam deploy --guided
 
 ## Export core stack resources to output file
 aws cloudformation describe-stacks --stack-name todo-houessou-com-ecs > core-output.json

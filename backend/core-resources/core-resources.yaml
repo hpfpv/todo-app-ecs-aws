@@ -327,7 +327,7 @@ Resources:
         - Name: !Join [ '-', [ !Ref 'AWS::StackName', 'main-service'] ]
           Cpu: '20'
           Essential: 'true'
-          Image: !Join [ '', [!Ref "AWS::AccountId", ".dkr.ecr.", !Ref 'AWS::Region', '.amazonaws.com/todo-houessou-com-ecs/todo-main-service:1']]
+          Image: !Join [ '', [!Ref "AWS::AccountId", ".dkr.ecr.", !Ref 'AWS::Region', '.amazonaws.com/', !Ref 'AWS::StackName', '/todo-main-service:1']]
           Memory: '200'
           LogConfiguration:
             LogDriver: awslogs
@@ -349,7 +349,7 @@ Resources:
         - Name: !Join [ '-', [ !Ref 'AWS::StackName', 'files-service'] ]
           Cpu: '20'
           Essential: 'false'
-          Image: !Join [ '', [!Ref "AWS::AccountId", ".dkr.ecr.", !Ref 'AWS::Region', '.amazonaws.com/todo-houessou-com-ecs/todo-files-service:1']]
+          Image: !Join [ '', [!Ref "AWS::AccountId", ".dkr.ecr.", !Ref 'AWS::Region', '.amazonaws.com/', !Ref 'AWS::StackName', '/todo-files-service:1']]
           Memory: '200'
           LogConfiguration:
             LogDriver: awslogs
@@ -630,7 +630,82 @@ Resources:
               - !Ref 'AWS::Region'
               - |+
             
-  # Rest API for main service
+  # S3 bucket for web static files
+  TodoEcsWebBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Join [ '', [ 'hpf-', !Ref AWS::StackName, '-web' ]] 
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - '*'
+            AllowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - HEAD
+            AllowedOrigins:
+              - 'https://todo.houessou.com'
+              - 'https://todo2.houessou.com'
+  
+  TodoEcsWebBucketOAI:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    DeletionPolicy: Retain
+    Properties: 
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Join ['', ['OAI ', !Ref TodoEcsWebBucket] ]
+
+  TodoEcsWebBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    DeletionPolicy: Retain
+    Properties:
+      Bucket: !Ref TodoEcsWebBucket
+      PolicyDocument:  
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - 's3:GetObject'
+            Resource: !Join ['', [!GetAtt 'TodoEcsWebBucket.Arn', '/*'] ]
+            Principal: 
+              AWS: !Sub 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${TodoEcsWebBucketOAI}'
+
+  TodoTodoEcsWebBucketCF:
+    Type: AWS::CloudFront::Distribution
+    DeletionPolicy: Retain
+    Properties:
+      DistributionConfig:
+        Aliases: 
+          - "todo2.houessou.com"
+        Comment: !Join ['', ['CDN for ', !Ref TodoEcsWebBucket] ]
+        Enabled: 'true'
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - HEAD
+            - DELETE
+            - POST
+            - GET
+            - OPTIONS
+            - PUT
+            - PATCH
+          ForwardedValues:
+            QueryString: 'false'
+          TargetOriginId: !Join ['', [!Ref 'TodoEcsWebBucket', '.s3.us-east-1.amazonaws.com'] ]
+          ViewerProtocolPolicy: redirect-to-https
+        Origins:
+          - S3OriginConfig:
+              OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${TodoEcsWebBucketOAI}'
+            DomainName: !Join ['', [!Ref 'TodoEcsWebBucket', '.s3.us-east-1.amazonaws.com'] ]
+            Id: !Join ['', [!Ref 'TodoEcsWebBucket', '.s3.us-east-1.amazonaws.com'] ]
+        ViewerCertificate:
+          SslSupportMethod: 'sni-only'
+          MinimumProtocolVersion: 'TLSv1'
+          CloudFrontDefaultCertificate: 'false'
+          AcmCertificateArn: !Join [ '', ['arn:aws:acm:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', 'certificate/d7f00780-5af8-463d-8185-65a4bb10a771' ] ]
+
+
   # Rest API for main service
   TodoEcsMainApi:
     Type: AWS::Serverless::Api
