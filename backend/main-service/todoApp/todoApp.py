@@ -21,7 +21,7 @@ def healthCheck():
     flaskResponse.status = "success"
     flaskResponse.status_code = 200
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com'"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
 
     return flaskResponse
 
@@ -39,7 +39,7 @@ def getTodos(userID):
 
     flaskResponse = Response(json.dumps(response))
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com'"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
 
     return flaskResponse
 
@@ -50,7 +50,7 @@ def getTodo(userID, todoID):
 
     flaskResponse = Response(response)
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com'"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
 
     return flaskResponse
     
@@ -65,7 +65,7 @@ def deleteTodo(userID, todoID):
     flaskResponse.status = "success"
     flaskResponse.status_code = 200
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com'"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
 
     return flaskResponse
 
@@ -78,7 +78,7 @@ def addTodo(userID):
     flaskResponse.status = "success"
     flaskResponse.status_code = 200
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com'"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
 
     return flaskResponse
 
@@ -88,7 +88,7 @@ def completeTodo(userID, todoID):
 
     flaskResponse = Response(response)
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com'"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
 
     return flaskResponse
 
@@ -102,7 +102,7 @@ def addTodoNotes(userID, todoID):
 
     flaskResponse = Response(response)
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com'"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
 
     return flaskResponse
 

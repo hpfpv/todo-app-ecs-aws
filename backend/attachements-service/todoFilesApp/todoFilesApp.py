@@ -22,7 +22,7 @@ def healthCheck():
     flaskResponse.status = "success"
     flaskResponse.status_code = 200
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com'"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
 
     return flaskResponse
 
@@ -37,7 +37,7 @@ def getTodoFiles(todoID):
 
     flaskResponse = Response(response)
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com'"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
 
     return flaskResponse
 
@@ -51,7 +51,7 @@ def addTodoFiles(todoID):
     flaskResponse.status = "success"
     flaskResponse.status_code = 200
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com'"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
 
     return flaskResponse
 
@@ -74,7 +74,7 @@ def deleteTodoFile(todoID, fileID):
     flaskResponse.status = "success"
     flaskResponse.status_code = 200
     flaskResponse.headers["Content-Type"] = "application/json"
-    flaskResponse.headers["Access-Control-Allow-Origin"] = "'https://todo2.houessou.com'"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
 
     return flaskResponse
 
