@@ -633,9 +633,8 @@ Resources:
   # S3 bucket for web static files
   TodoEcsWebBucket:
     Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
     Properties:
-      BucketName: !Join [ '', [ 'hpf-', !Ref AWS::StackName, '-web' ]] 
+      BucketName: 'hpf-todo-app-ecs-web'
       CorsConfiguration:
         CorsRules:
           - AllowedHeaders:
@@ -652,14 +651,12 @@ Resources:
   
   TodoEcsWebBucketOAI:
     Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
-    DeletionPolicy: Retain
     Properties: 
       CloudFrontOriginAccessIdentityConfig:
-        Comment: !Join ['', ['OAI ', !Ref TodoEcsWebBucket] ]
+        Comment: !Join ['', ['access-identity-', !Ref TodoEcsWebBucket, '.s3.amazonaws.com'] ]
 
   TodoEcsWebBucketPolicy:
     Type: AWS::S3::BucketPolicy
-    DeletionPolicy: Retain
     Properties:
       Bucket: !Ref TodoEcsWebBucket
       PolicyDocument:  
@@ -674,7 +671,6 @@ Resources:
 
   TodoTodoEcsWebBucketCF:
     Type: AWS::CloudFront::Distribution
-    DeletionPolicy: Retain
     Properties:
       DistributionConfig:
         Aliases: 
