@@ -4,86 +4,27 @@ Transform: AWS::Serverless-2016-10-31
 Description: This stack deploys the core infrastructure and ECS service 
              and task definition to be used for todo-houessou-com-ecs main service.
 
-Globals:
-  Function:
-    Runtime: python3.8
-
 Mappings:
   SubnetConfig:
     VPC:
-      CIDR: '10.0.0.0/16'
+      ID: 'vpc-6004181a'
     PublicOne:
-      CIDR: '10.0.0.0/24'
+      ID: 'subnet-35f83853'
     PublicTwo:
-      CIDR: '10.0.1.0/24'
+      ID: 'subnet-b227b7ff'
     PrivateOne:
-      CIDR: '10.0.2.0/24'
+      ID: 'subnet-ed4d80b2'
     PrivateTwo:
-      CIDR: '10.0.3.0/24'
+      ID: 'subnet-b352458d'
+    InternetGateway:
+      ID: 'igw-1a286b61'
 
 Resources:
-  VPC:
-    Type: AWS::EC2::VPC
-    Properties:
-      EnableDnsSupport: true
-      EnableDnsHostnames: true
-      CidrBlock: !FindInMap ['SubnetConfig', 'VPC', 'CIDR']
-
-  PublicSubnetOne:
-    Type: AWS::EC2::Subnet
-    Properties:
-      AvailabilityZone:
-         Fn::Select:
-         - 0
-         - Fn::GetAZs: {Ref: 'AWS::Region'}
-      VpcId: !Ref VPC
-      CidrBlock: !FindInMap ['SubnetConfig', 'PublicOne', 'CIDR']
-      MapPublicIpOnLaunch: true
-
-  PublicSubnetTwo:
-    Type: AWS::EC2::Subnet
-    Properties:
-      AvailabilityZone:
-         Fn::Select:
-         - 1
-         - Fn::GetAZs: {Ref: 'AWS::Region'}
-      VpcId: !Ref VPC
-      CidrBlock: !FindInMap ['SubnetConfig', 'PublicTwo', 'CIDR']
-      MapPublicIpOnLaunch: true
-
-  PrivateSubnetOne:
-    Type: AWS::EC2::Subnet
-    Properties:
-      AvailabilityZone:
-         Fn::Select:
-         - 0
-         - Fn::GetAZs: {Ref: 'AWS::Region'}
-      VpcId: !Ref VPC
-      CidrBlock: !FindInMap ['SubnetConfig', 'PrivateOne', 'CIDR']
-
-  #PrivateSubnetTwo:
-  #  Type: AWS::EC2::Subnet
-  #  Properties:
-  #    AvailabilityZone:
-  #       Fn::Select:
-  #       - 1
-  #       - Fn::GetAZs: {Ref: 'AWS::Region'}
-  #    VpcId: !Ref VPC
-  #    CidrBlock: !FindInMap ['SubnetConfig', 'PrivateTwo', 'CIDR']
-
-  InternetGateway:
-    Type: AWS::EC2::InternetGateway
-
-  GatewayAttachement:
-    Type: AWS::EC2::VPCGatewayAttachment
-    Properties:
-      VpcId: !Ref VPC
-      InternetGatewayId: !Ref 'InternetGateway'
 
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref VPC
+      VpcId: !FindInMap ['SubnetConfig', 'VPC', 'ID']
 
   PublicRoute:
     Type: AWS::EC2::Route
@@ -91,79 +32,67 @@ Resources:
     Properties:
       RouteTableId: !Ref 'PublicRouteTable'
       DestinationCidrBlock: '0.0.0.0/0'
-      GatewayId: !Ref 'InternetGateway'
+      GatewayId: !FindInMap ['SubnetConfig', 'InternetGateway', 'ID']
 
   PublicSubnetOneRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref PublicSubnetOne
+      SubnetId: !FindInMap ['SubnetConfig', 'PublicOne', 'ID']
       RouteTableId: !Ref PublicRouteTable
 
   PublicSubnetTwoRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref PublicSubnetTwo
+      SubnetId: !FindInMap ['SubnetConfig', 'PublicTwo', 'ID']
       RouteTableId: !Ref PublicRouteTable
 
-  NatGatewayOneAttachment:
+  NatGatewayAttachment:
     Type: AWS::EC2::EIP
     DependsOn: GatewayAttachement
     Properties:
         Domain: vpc
 
-  #NatGatewayTwoAttachment:
-  #  Type: AWS::EC2::EIP
-  #  DependsOn: GatewayAttachement
-  #  Properties:
-  #      Domain: vpc
-
-  NatGatewayOne:
+  NatGateway:
     Type: AWS::EC2::NatGateway
     Properties:
-      AllocationId: !GetAtt NatGatewayOneAttachment.AllocationId
-      SubnetId: !Ref PublicSubnetOne
-
-  #NatGatewayTwo:
-  #  Type: AWS::EC2::NatGateway
-  #  Properties:
-  #    AllocationId: !GetAtt NatGatewayTwoAttachment.AllocationId
-  #    SubnetId: !Ref PublicSubnetTwo
+      AllocationId: !GetAtt NatGatewayAttachment.AllocationId
+      SubnetId: !FindInMap ['SubnetConfig', 'PublicOne', 'ID']
 
   PrivateRouteTableOne:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref VPC
+      VpcId: !FindInMap ['SubnetConfig', 'VPC', 'ID']
 
   PrivateRouteOne:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref PrivateRouteTableOne
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref NatGatewayOne
+      NatGatewayId: !Ref NatGateway
 
   PrivateRouteTableOneAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId: !Ref PrivateRouteTableOne
-      SubnetId: !Ref PrivateSubnetOne
+      SubnetId: !FindInMap ['SubnetConfig', 'PrivateOne', 'ID']
 
-  #PrivateRouteTableTwo:
-  #  Type: AWS::EC2::RouteTable
-  #  Properties:
-  #    VpcId: !Ref VPC
+  PrivateRouteTableTwo:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !FindInMap ['SubnetConfig', 'VPC', 'ID']
 
-  #PrivateRouteTwo:
-  #  Type: AWS::EC2::Route
-  #  Properties:
-  #    RouteTableId: !Ref PrivateRouteTableTwo
-  #    DestinationCidrBlock: 0.0.0.0/0
-  #    NatGatewayId: !Ref NatGatewayTwo
+  PrivateRouteTwo:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTableTwo
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGateway
 
-  #PrivateRouteTableTwoAssociation:
-  #  Type: AWS::EC2::SubnetRouteTableAssociation
-  #  Properties:
-  #    RouteTableId: !Ref PrivateRouteTableTwo
-  #    SubnetId: !Ref PrivateSubnetTwo
+  PrivateRouteTableTwoAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTableTwo
+      SubnetId: !FindInMap ['SubnetConfig', 'PrivateTwo', 'ID']
   
   ECSCluster:
     Type: 'AWS::ECS::Cluster'
