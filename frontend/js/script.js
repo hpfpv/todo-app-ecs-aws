@@ -421,6 +421,7 @@ function addTodo(dateDue, title, description){
     error : function(response) {
         console.log("could not add todo");
         alert("Could not add todo (x_x)");
+        window.location.reload();
         console.log(response);
 
     }
