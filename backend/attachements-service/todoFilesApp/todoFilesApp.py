@@ -43,13 +43,17 @@ def getTodoFiles(todoID):
     return flaskResponse
 
 # route for add todo files
-@app.route('/<todoID>/files/upload', methods=['POST'])
+@app.route('/<todoID>/files/upload', methods=['GET', 'POST'])
 def addTodoFiles(todoID):
     eventBody = request.json
-    response = todoFilesService.addTodoFiles(todoID, eventBody)
+    responseDB = todoFilesService.addTodoFiles(todoID, eventBody)
 
-    flaskResponse = Response(response)
-    flaskResponse.status = "success"
+    logger.info(responseDB)
+
+    response = {}
+    response["status"] = "success"  
+
+    flaskResponse = Response(json.dumps(response))
     flaskResponse.status_code = 200
     flaskResponse.headers["Content-Type"] = "application/json"
     flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
@@ -59,7 +63,7 @@ def addTodoFiles(todoID):
 
 
 #route for delete todo files
-@app.route('/<todoID>/files/<fileID>/delete', methods=['GET', 'DELETE'])
+@app.route('/<todoID>/files/<fileID>/delete', methods=['GET', 'DELETE', 'POST'])
 def deleteTodoFile(todoID, fileID):
     eventBody = request.json
     bucketCDN = os.environ['TODOFILES_BUCKET_CDN']
@@ -71,14 +75,15 @@ def deleteTodoFile(todoID, fileID):
     todoFilesService.deleteTodosFileS3(fileKey)
     todoFilesService.deleteTodosFileDynamo(fileID)
     
+    response = {}
+    response["status"] = "success"  
 
-    flaskResponse = Response({})
-    flaskResponse.status = "success"
+    flaskResponse = Response(json.dumps(response))
     flaskResponse.status_code = 200
     flaskResponse.headers["Content-Type"] = "application/json"
     flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
     flaskResponse.headers["Access-Control-Allow-Headers"] = "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"
-    
+
 
     return flaskResponse
 

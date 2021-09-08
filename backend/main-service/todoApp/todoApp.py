@@ -48,6 +48,8 @@ def getTodo(userID, todoID):
     print(f'Getting todo: {todoID}')
     response = todoService.getTodo(todoID)
 
+    logger.info(response)
+
     flaskResponse = Response(response)
     flaskResponse.headers["Content-Type"] = "application/json"
     flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
@@ -55,15 +57,17 @@ def getTodo(userID, todoID):
 
     return flaskResponse
     
-@app.route('/<userID>/todos/<todoID>/delete', methods=['DELETE'])
+@app.route('/<userID>/todos/<todoID>/delete', methods=['GET', 'DELETE' , 'POST'])
 def deleteTodo(userID, todoID):
     print(f"deleting todo {todoID}")
     todoService.deleteTodoFilesS3(userID, todoID)
     todoService.deleteTodoFilesDynamo(todoID)
     todoService.deleteTodo(todoID)
     
-    flaskResponse = Response({})
-    flaskResponse.status = "success"
+    response = {}
+    response["status"] = "success"  
+
+    flaskResponse = Response(json.dumps(response))
     flaskResponse.status_code = 200
     flaskResponse.headers["Content-Type"] = "application/json"
     flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
@@ -71,13 +75,17 @@ def deleteTodo(userID, todoID):
 
     return flaskResponse
 
-@app.route('/<userID>/todos/add', methods=['POST'])
+@app.route('/<userID>/todos/add', methods=['GET', 'POST'])
 def addTodo(userID):
     eventBody = request.json
-    response = todoService.addTodo(userID, eventBody)
+    responseDB = todoService.addTodo(userID, eventBody)
 
-    flaskResponse = Response(response)
-    flaskResponse.status = "success"
+    logger.info(responseDB)
+
+    response = {}
+    response["status"] = "success"  
+
+    flaskResponse = Response(json.dumps(response))
     flaskResponse.status_code = 200
     flaskResponse.headers["Content-Type"] = "application/json"
     flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
@@ -85,10 +93,12 @@ def addTodo(userID):
 
     return flaskResponse
 
-@app.route('/<userID>/todos/<todoID>/complete', methods=['POST'])
+@app.route('/<userID>/todos/<todoID>/complete', methods=['GET', 'POST'])
 def completeTodo(userID, todoID):
     response = todoService.completeTodo(todoID)
 
+    logger.info(response)
+
     flaskResponse = Response(response)
     flaskResponse.headers["Content-Type"] = "application/json"
     flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
@@ -96,13 +106,15 @@ def completeTodo(userID, todoID):
 
     return flaskResponse
 
-@app.route('/<userID>/todos/<todoID>/addnotes', methods=['POST'])
+@app.route('/<userID>/todos/<todoID>/addnotes', methods=['GET', 'POST'])
 def addTodoNotes(userID, todoID):
 
     notes = request.json["notes"]
     
     logger.info(f'adding notes for : {todoID}')
     response = todoService.addTodoNotes(todoID, notes)
+
+    logger.info(response)
 
     flaskResponse = Response(response)
     flaskResponse.headers["Content-Type"] = "application/json"
