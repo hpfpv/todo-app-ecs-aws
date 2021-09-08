@@ -654,8 +654,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "*"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName', '/' ]]
                 connectionType: "INTERNET"
             options:
@@ -681,8 +681,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "*"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                     responseTemplates:
                       application/json: "{}\n"
               responses:
@@ -723,8 +723,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "*"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                 requestParameters:
                   integration.request.path.userID: method.request.path.userID
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos'] ]
@@ -752,8 +752,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "*"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                     responseTemplates:
                       application/json: "{}\n"
               responses:
@@ -798,8 +798,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "*"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos/{todoID}'] ]
                 requestParameters:
                   integration.request.path.userID: method.request.path.userID
@@ -828,8 +828,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "*"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                     responseTemplates:
                       application/json: "{}\n"
               responses:
@@ -870,8 +870,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "'GET,POST'"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                 requestParameters:
                   integration.request.path.userID: method.request.path.userID
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{userID}/todos/add'] ]
@@ -899,8 +899,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "'GET,POST'"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                     responseTemplates:
                       application/json: "{}\n"
               responses:
@@ -944,8 +944,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "'GET,PUT,DELETE'"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                 requestParameters:
                   integration.request.path.userID: method.request.path.userID
                   integration.request.path.todoID: method.request.path.todoID
@@ -974,8 +974,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "'GET,PUT,DELETE'"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                     responseTemplates:
                       application/json: "{}\n"
               responses:
@@ -1020,8 +1020,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "'GET,POST'"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                 requestParameters:
                   integration.request.path.userID: method.request.path.userID
                   integration.request.path.todoID: method.request.path.todoID
@@ -1050,8 +1050,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "'GET,POST'"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                     responseTemplates:
                       application/json: "{}\n"
               responses:
@@ -1096,8 +1096,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "'GET,POST'"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                 requestParameters:
                   integration.request.path.userID: method.request.path.userID
                   integration.request.path.todoID: method.request.path.todoID
@@ -1126,8 +1126,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "'GET,POST'"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                     responseTemplates:
                       application/json: "{}\n"
               responses:
@@ -1191,8 +1191,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "*"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                 requestParameters:
                   integration.request.path.todoID: method.request.path.todoID
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{todoID}/files'] ]
@@ -1220,8 +1220,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "*"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                     responseTemplates:
                       application/json: "{}\n"
               responses:
@@ -1262,8 +1262,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "'GET,POST'"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                 requestParameters:
                   integration.request.path.todoID: method.request.path.todoID
                 uri: !Join [ '', ['http://', !GetAtt 'ECSALB.DNSName','/{todoID}/files/upload'] ]
@@ -1291,8 +1291,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "'GET,POST'"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                     responseTemplates:
                       application/json: "{}\n"
               responses:
@@ -1336,8 +1336,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "'GET,PUT,DELETE'"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                 requestParameters:
                   integration.request.path.todoID: method.request.path.todoID
                   integration.request.path.fileID: method.request.path.fileID
@@ -1366,8 +1366,8 @@ Resources:
                     statusCode: '200'
                     responseParameters:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-                      method.response.header.Access-Control-Allow-Methods: "'GET,PUT,DELETE'"
-                      method.response.header.Access-Control-Allow-Origin: "https://todo2.houessou.com"
+                      method.response.header.Access-Control-Allow-Methods: "'*'"
+                      method.response.header.Access-Control-Allow-Origin: "'https://todo2.houessou.com'"
                     responseTemplates:
                       application/json: "{}\n"
               responses:
