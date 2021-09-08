@@ -8,6 +8,7 @@ Mappings:
   SubnetConfig:
     VPC:
       ID: 'vpc-6004181a'
+      CIDR: '172.31.0.0/16'
     PublicOne:
       ID: 'subnet-35f83853'
     PublicTwo:
@@ -20,7 +21,7 @@ Mappings:
       ID: 'igw-1a286b61'
 
 Resources:
-
+# Core network
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -103,7 +104,7 @@ Resources:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
       GroupDescription: ALB Security Group
-      VpcId: !Ref VPC
+      VpcId: !FindInMap ['SubnetConfig', 'VPC', 'ID']
 
   ALBSecurityGroupHTTPinbound:
     Type: 'AWS::EC2::SecurityGroupIngress'
@@ -126,17 +127,14 @@ Resources:
   CloudwatchLogsGroup:
     Type: 'AWS::Logs::LogGroup'
     Properties:
-      LogGroupName: !Join 
-        - '-'
-        - - !Ref 'AWS::StackName'
-          - logs
+      LogGroupName: !Join ['-', [!Ref 'AWS::StackName', 'logs'] ]
       RetentionInDays: 14
  
   EcsContainerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Access to the ECS containers from the Internet
-      VpcId: !Ref VPC
+      VpcId: !FindInMap ['SubnetConfig', 'VPC', 'ID']
       SecurityGroupIngress:
           - CidrIp: !FindInMap ['SubnetConfig', 'VPC', 'CIDR']
             IpProtocol: -1
@@ -314,8 +312,8 @@ Resources:
       #    SecurityGroups: 
       #      - !Ref EcsContainerSecurityGroup
       #    Subnets: 
-      #      - !Ref PrivateSubnetOne
-      #      - !Ref PrivateSubnetTwo
+      #      - !FindInMap ['SubnetConfig', 'PrivateOne', 'ID']
+      #      - !FindInMap ['SubnetConfig', 'PrivateTwo', 'ID']
       LoadBalancers:
         - ContainerName: !Join [ '-', [ !Ref 'AWS::StackName', 'main-service'] ]
           ContainerPort: 8080
@@ -335,8 +333,8 @@ Resources:
         - Key: idle_timeout.timeout_seconds
           Value: '30'
       Subnets: 
-        - !Ref 'PublicSubnetOne'
-        - !Ref 'PublicSubnetTwo'
+        - !FindInMap ['SubnetConfig', 'PublicOne', 'ID']
+        - !FindInMap ['SubnetConfig', 'PublicTwo', 'ID']
       SecurityGroups:
         - !Ref ALBSecurityGroup
 
@@ -392,7 +390,7 @@ Resources:
       Port: 8080
       Protocol: HTTP
       UnhealthyThresholdCount: 2
-      VpcId: !Ref VPC
+      VpcId: !FindInMap ['SubnetConfig', 'VPC', 'ID']
   
   ECSTGFiles:
     Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
@@ -407,13 +405,14 @@ Resources:
       Port: 8081
       Protocol: HTTP
       UnhealthyThresholdCount: 2
-      VpcId: !Ref VPC
+      VpcId: !FindInMap ['SubnetConfig', 'VPC', 'ID']
 
   ECSAutoScalingGroup:
     Type: 'AWS::AutoScaling::AutoScalingGroup'
     Properties:
       VPCZoneIdentifier:
-        - !Ref PrivateSubnetOne
+        - !FindInMap ['SubnetConfig', 'PrivateOne', 'ID']
+        - !FindInMap ['SubnetConfig', 'PrivateTwo', 'ID']
       LaunchConfigurationName: !Ref ContainerInstances
       MinSize: 1
       MaxSize: 2
@@ -1402,19 +1401,19 @@ Outputs:
     Export:
       Name: !Sub "${AWS::StackName}-ECSTaskRoleArn"
   VPCId:
-    Value: !Ref VPC
+    Value: !FindInMap ['SubnetConfig', 'VPC', 'ID']
     Export:
       Name: !Sub "${AWS::StackName}-VPCId"
   PublicSubnetOne:
-    Value: !Ref 'PublicSubnetOne'
+    Value: !FindInMap ['SubnetConfig', 'PublicOne', 'ID']
     Export:
       Name: !Sub "${AWS::StackName}-PublicSubnetOne"
   PublicSubnetTwo:
-    Value: !Ref 'PublicSubnetTwo'
+    Value: !FindInMap ['SubnetConfig', 'PublicTwo', 'ID']
     Export:
       Name: !Sub "${AWS::StackName}-PublicSubnetTwo"
   PrivateSubnetOne:
-    Value: !Ref 'PrivateSubnetOne'
+    Value: !FindInMap ['SubnetConfig', 'PrivateOne', 'ID']
     Export:
       Name: !Sub "${AWS::StackName}-PrivateSubnetOne"
   EcsContainerSecurityGroup:
