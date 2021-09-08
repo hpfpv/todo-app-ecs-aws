@@ -37,7 +37,8 @@ def getTodoFiles(todoID):
 
     flaskResponse = Response(response)
     flaskResponse.headers["Content-Type"] = "application/json"
-
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
+    flaskResponse.headers["Access-Control-Allow-Headers"] = "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"
 
     return flaskResponse
 
@@ -51,6 +52,8 @@ def addTodoFiles(todoID):
     flaskResponse.status = "success"
     flaskResponse.status_code = 200
     flaskResponse.headers["Content-Type"] = "application/json"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
+    flaskResponse.headers["Access-Control-Allow-Headers"] = "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"
 
     return flaskResponse
 
@@ -73,7 +76,9 @@ def deleteTodoFile(todoID, fileID):
     flaskResponse.status = "success"
     flaskResponse.status_code = 200
     flaskResponse.headers["Content-Type"] = "application/json"
-
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
+    flaskResponse.headers["Access-Control-Allow-Headers"] = "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"
+    
 
     return flaskResponse
 

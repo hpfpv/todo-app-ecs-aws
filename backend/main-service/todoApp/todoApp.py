@@ -38,7 +38,8 @@ def getTodos(userID):
 
     flaskResponse = Response(json.dumps(response))
     flaskResponse.headers["Content-Type"] = "application/json"
-
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
+    flaskResponse.headers["Access-Control-Allow-Headers"] = "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"
 
     return flaskResponse
 
@@ -49,7 +50,8 @@ def getTodo(userID, todoID):
 
     flaskResponse = Response(response)
     flaskResponse.headers["Content-Type"] = "application/json"
-
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
+    flaskResponse.headers["Access-Control-Allow-Headers"] = "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"
 
     return flaskResponse
     
@@ -64,6 +66,8 @@ def deleteTodo(userID, todoID):
     flaskResponse.status = "success"
     flaskResponse.status_code = 200
     flaskResponse.headers["Content-Type"] = "application/json"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
+    flaskResponse.headers["Access-Control-Allow-Headers"] = "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"
 
     return flaskResponse
 
@@ -76,6 +80,8 @@ def addTodo(userID):
     flaskResponse.status = "success"
     flaskResponse.status_code = 200
     flaskResponse.headers["Content-Type"] = "application/json"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
+    flaskResponse.headers["Access-Control-Allow-Headers"] = "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"
 
     return flaskResponse
 
@@ -85,6 +91,8 @@ def completeTodo(userID, todoID):
 
     flaskResponse = Response(response)
     flaskResponse.headers["Content-Type"] = "application/json"
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
+    flaskResponse.headers["Access-Control-Allow-Headers"] = "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"
 
     return flaskResponse
 
@@ -98,7 +106,8 @@ def addTodoNotes(userID, todoID):
 
     flaskResponse = Response(response)
     flaskResponse.headers["Content-Type"] = "application/json"
-
+    flaskResponse.headers["Access-Control-Allow-Origin"] = "https://todo2.houessou.com"
+    flaskResponse.headers["Access-Control-Allow-Headers"] = "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"
 
     return flaskResponse
 
