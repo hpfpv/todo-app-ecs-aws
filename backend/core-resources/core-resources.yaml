@@ -357,7 +357,7 @@ Resources:
       Conditions:
         - Field: path-pattern
           Values:
-            - /
+            - '*/todos*'
       ListenerArn: !Ref ALBListener
       Priority: 1
   
@@ -371,7 +371,7 @@ Resources:
       Conditions:
         - Field: path-pattern
           Values:
-            - /*/files
+            - '*/files*'
       ListenerArn: !Ref ALBListener
       Priority: 2
 
@@ -555,20 +555,23 @@ Resources:
               - !Ref 'AWS::Region'
               - |+
             
-  # S3 bucket for web static files
+# S3 bucket for web static files
   TodoEcsWebBucket:
     Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
     Properties:
       BucketName: 'hpf-todo-app-ecs-web'
   
   TodoEcsWebBucketOAI:
     Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    DeletionPolicy: Retain
     Properties: 
       CloudFrontOriginAccessIdentityConfig:
         Comment: !Join ['', ['access-identity-', !Ref TodoEcsWebBucket, '.s3.amazonaws.com'] ]
 
   TodoEcsWebBucketPolicy:
     Type: AWS::S3::BucketPolicy
+    DeletionPolicy: Retain
     Properties:
       Bucket: !Ref TodoEcsWebBucket
       PolicyDocument:  
@@ -583,6 +586,7 @@ Resources:
 
   TodoEcsWebBucketCF:
     Type: AWS::CloudFront::Distribution
+    DeletionPolicy: Retain
     DependsOn: TodoEcsWebBucket
     Properties:
       DistributionConfig:
@@ -1436,14 +1440,6 @@ Outputs:
     Value: !Join [ '', [ !GetAtt 'ECSALB.DNSName' ]]
     Export:
       Name: !Sub "${AWS::StackName}-ECSALB"
-  TodoEcsWebBucket:
-    Value: !Ref 'TodoEcsWebBucket' 
-    Export:
-      Name: !Sub "${AWS::StackName}-TodoEcsWebBucket"
-  TodoEcsWebBucketCFDomainName:
-    Value: !GetAtt 'TodoEcsWebBucketCF.DomainName' 
-    Export:
-      Name: !Sub "${AWS::StackName}-TodoEcsWebBucketCFDomainName"
   TodoEcsMainApi:
     Value: !Join [ '', ['https://', !Ref TodoEcsMainApi, '.execute-api.us-east-1.amazonaws.com/dev'] ]
     Export:
