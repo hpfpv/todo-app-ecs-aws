@@ -12,7 +12,7 @@ s3 = boto3.resource('s3')
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-bucket = os.environ['TODOFILES_BUCKET']
+bucketName = os.environ['TODOFILES_BUCKET']
 bucketCDN = os.environ['TODOFILES_BUCKET_CDN']
 todotable = os.environ['TODO_TABLE']
 filestable = os.environ['TODOFILES_TABLE']
@@ -62,7 +62,7 @@ def addTodoFiles(todoID, eventBody):
     fileName = eventBody["fileName"]
     fileID = str(uuid.uuid4())
     filePath = eventBody["filePath"]
-    fileKey = str(filePath).replace(f'https://{bucket}/.s3.amazonaws.com/','')
+    fileKey = str(filePath).replace(f'https://{bucketName}/.s3.amazonaws.com/','')
     filePathCDN = 'https://' + bucketCDN + '/' + filePath
     fileForDynamo = {}
     fileForDynamo["fileID"] =  {
@@ -100,7 +100,7 @@ def addTodoFiles(todoID, eventBody):
 # delete todo files
 def deleteTodosFileS3(key):
     response = s3.delete_object(
-        Bucket=bucket,
+        Bucket=bucketName,
         Key=key,
     )
     logging.info(f"{key} deleted from S3")

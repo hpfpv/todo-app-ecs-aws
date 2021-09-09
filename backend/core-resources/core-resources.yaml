@@ -584,6 +584,7 @@ Resources:
 
   TodoEcsWebBucketCF:
     Type: AWS::CloudFront::Distribution
+    DependsOn: TodoEcsWebBucket
     Properties:
       DistributionConfig:
         Aliases: 

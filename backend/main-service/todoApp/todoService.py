@@ -14,7 +14,7 @@ s3 = boto3.resource('s3')
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-bucket = os.environ['TODOFILES_BUCKET']
+bucket = s3.Bucket(os.environ['TODOFILES_BUCKET'])
 bucketCDN = os.environ['TODOFILES_BUCKET_CDN']
 todotable = os.environ['TODO_TABLE']
 filestable = os.environ['TODOFILES_TABLE']
