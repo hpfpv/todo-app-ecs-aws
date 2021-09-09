@@ -4,7 +4,6 @@ Transform: AWS::Serverless-2016-10-31
 Description: This stack deploys the core infrastructure and ECS service 
              and task definition to be used for todo-houessou-com-ecs main service.
 
-
 Mappings:
   SubnetConfig:
     VPC:
