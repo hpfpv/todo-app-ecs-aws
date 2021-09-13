@@ -1,5 +1,5 @@
-var todoApiEndpoint = 'https://df6j59hzs5.execute-api.us-east-1.amazonaws.com/dev/';
-var todoFilesApiEndpoint = 'https://970o67s3jj.execute-api.us-east-1.amazonaws.com/dev/';
+var todoApiEndpoint = 'https://51swskgd8h.execute-api.us-east-1.amazonaws.com/dev/';
+var todoFilesApiEndpoint = 'https://g6tppdel3e.execute-api.us-east-1.amazonaws.com/dev/';
 var cognitoUserPoolId = 'us-east-1_fM3BzKm1u';
 var cognitoUserPoolClientId = '4ajb6clml9vft00cof689o6c0p';
 var cognitoIdentityPoolId = 'us-east-1:1d4efcf7-f995-4331-bd94-c3ed6111f246';
