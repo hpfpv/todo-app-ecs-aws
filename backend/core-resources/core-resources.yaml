@@ -104,6 +104,12 @@ Resources:
       GroupDescription: ALB Security Group
       VpcId: !FindInMap ['SubnetConfig', 'VPC', 'ID']
 
+  EcsContainerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the ECS containers from the Internet
+      VpcId: !FindInMap ['SubnetConfig', 'VPC', 'ID']
+
   ALBSecurityGroupHTTPinbound:
     Type: 'AWS::EC2::SecurityGroupIngress'
     Properties:
@@ -116,7 +122,7 @@ Resources:
   EcsSecurityGroupALBports:
     Type: 'AWS::EC2::SecurityGroupIngress'
     Properties:
-      GroupId: !Ref ALBSecurityGroup
+      GroupId: !Ref EcsContainerSecurityGroup
       IpProtocol: tcp
       FromPort: 31000
       ToPort: 61000
@@ -127,15 +133,6 @@ Resources:
     Properties:
       LogGroupName: !Join ['-', [!Ref 'AWS::StackName', 'logs'] ]
       RetentionInDays: 14
- 
-  EcsContainerSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Access to the ECS containers from the Internet
-      VpcId: !FindInMap ['SubnetConfig', 'VPC', 'ID']
-      SecurityGroupIngress:
-          - CidrIp: !FindInMap ['SubnetConfig', 'VPC', 'CIDR']
-            IpProtocol: -1
 
   EcsServiceRole:
     Type: AWS::IAM::Role
