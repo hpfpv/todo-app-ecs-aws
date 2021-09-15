@@ -300,7 +300,7 @@ Resources:
       Cluster: !Ref ECSCluster
       LaunchType: EC2
       DeploymentConfiguration: 
-        MaximumPercent: 200
+        MaximumPercent: 300
         MinimumHealthyPercent: 100
       DesiredCount: 1
       #NetworkConfiguration: 
@@ -311,6 +311,11 @@ Resources:
       #    Subnets: 
       #      - !FindInMap ['SubnetConfig', 'PrivateOne', 'ID']
       #      - !FindInMap ['SubnetConfig', 'PrivateTwo', 'ID']
+      PlacementStrategies:
+        - Type: spread
+          Field: attribute:ecs.availability-zone
+        - Type: binpack
+          Field: memory
       LoadBalancers:
         - ContainerName: !Join [ '-', [ !Ref 'AWS::StackName', 'main-service'] ]
           ContainerPort: 8080
@@ -408,8 +413,8 @@ Resources:
         - !FindInMap ['SubnetConfig', 'PrivateTwo', 'ID']
       LaunchConfigurationName: !Ref ContainerInstances
       MinSize: 1
-      MaxSize: 2
-      DesiredCapacity: 1
+      MaxSize: 3
+      DesiredCapacity: 2
     CreationPolicy:
       ResourceSignal:
         Timeout: PT15M
