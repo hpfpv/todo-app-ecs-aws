@@ -300,9 +300,9 @@ Resources:
       Cluster: !Ref ECSCluster
       LaunchType: EC2
       DeploymentConfiguration: 
-        MaximumPercent: 300
+        MaximumPercent: 400
         MinimumHealthyPercent: 100
-      DesiredCount: 1
+      DesiredCount: 2
       #NetworkConfiguration: 
       #  AwsvpcConfiguration:
       #    AssignPublicIp: "DISABLED"
@@ -426,8 +426,8 @@ Resources:
     Type: 'AWS::ApplicationAutoScaling::ScalableTarget'
     DependsOn: EcsService
     Properties:
-      MaxCapacity: 2
-      MinCapacity: 1
+      MaxCapacity: 4
+      MinCapacity: 2
       ResourceId: !Join [ '', ['service/', !Ref ECSCluster, '/', !GetAtt 'EcsService.Name'] ]
       RoleARN: !GetAtt 'AutoscalingRole.Arn'
       ScalableDimension: 'ecs:service:DesiredCount'
