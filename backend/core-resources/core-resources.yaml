@@ -348,7 +348,6 @@ Resources:
 
   ECSALBListenerRuleMain:
     Type: 'AWS::ElasticLoadBalancingV2::ListenerRule'
-    DependsOn: ALBListener
     Properties:
       Actions:
         - Type: forward
@@ -362,7 +361,6 @@ Resources:
   
   ECSALBListenerRuleFiles:
     Type: 'AWS::ElasticLoadBalancingV2::ListenerRule'
-    DependsOn: ALBListener
     Properties:
       Actions:
         - Type: forward
@@ -376,7 +374,6 @@ Resources:
 
   ECSTGMain:
     Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
-    DependsOn: ECSALB
     Properties:
       HealthCheckIntervalSeconds: 120
       HealthCheckPath: /
@@ -391,7 +388,6 @@ Resources:
   
   ECSTGFiles:
     Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
-    DependsOn: ECSALB
     Properties:
       HealthCheckIntervalSeconds: 120
       HealthCheckPath: /
