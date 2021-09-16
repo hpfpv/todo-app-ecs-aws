@@ -31,7 +31,6 @@ def getTodos(userID):
     foo bar...
     ...
     return todolist     # as json
-
 ``` 
 Even though both services use the same design, they are built in 2 separate images and stored on the AWS Elastic Container Registry. I am doing this to isolate the services so that an issue with one container does not affect the whole application.
 
