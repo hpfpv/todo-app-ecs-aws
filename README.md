@@ -166,3 +166,14 @@ Every time the templates changed, a Cloudformation changeset is generated and th
 The backend code is dockerized and images are pushed to our private ECR repository. The ECS task definition is then updated with the new image tag and redeployed to ECS. This happens every time the backend code is updated. Each service got a separate pipeline.
 
 ![backend-services-pipline.png](https://cdn.hashnode.com/res/hashnode/image/upload/v1644793944031/7CG1zHhp6.png)
+
+## Takeaways
+
+**Go for Serverless!**
+
+While I had fun spinning up containers with ECS, I found the operations burden (setting up the VPC, ensuring HA with scaling group and policies...) a lot heavier than when deploying serverless resources. Not to talk about the cost of having EC2s running at all times.
+It is true that some applications use cases require the exclusive use of containers. But now with more AWS services being serverless friendly, it is easier to redesign existing apps to take advantage of that.
+And if you absolutely need to run containers, well **[AWS App Runner](https://aws.amazon.com/apprunner/)** can do it for you while abstracting infrastructure provisioning.
+
+
+> *PS: I am preparing for the CKA exam at the time of publishing this blog post.*
