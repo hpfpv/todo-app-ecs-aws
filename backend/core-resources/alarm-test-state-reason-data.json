@@ -1,0 +1,21 @@
+{
+    "Version": "1.0",
+    "Statistic": "Average",
+    "Period": 60,
+    "Threshold": 10,
+    "AlarmActions": [
+        "arn:aws:autoscaling:us-east-1:601091111123:scalingPolicy:cd4b4e0d-263a-4089-9ef9-f3e1b0b32264:resource/ecs/service/todo-houessou-com-ecs-EcsCluster/todo-houessou-com-ecs-EcsService:policyName/todo-houessou-com-ecs-Service-ScalingPolicy"
+      ],
+      "Namespace": "AWS/ApplicationELB",
+      "Dimensions": [
+        {
+          "Name": "LoadBalancer",
+          "Value": "todo-houessou-com-ecs-ALB"
+        }
+      ],
+      "RecentDatapoints": [
+        100
+    ],
+    "ComparisonOperator": "GreaterThanThreshold",
+    "MetricName": "HTTPCode_ELB_5XX_Count"
+}
