@@ -173,7 +173,7 @@ The backend code is dockerized and images are pushed to our private ECR reposito
 
 While I had fun spinning up containers with ECS, I found the operations burden (setting up the VPC, ensuring HA with scaling group and policies...) a lot heavier than when deploying serverless resources. Not to talk about the cost of having EC2s running at all times.
 It is true that some applications use cases require the exclusive use of containers. But now with more AWS services being serverless friendly, it is easier to redesign existing apps to take advantage of that.
-And if you absolutely need to run containers, well **[AWS App Runner](https://aws.amazon.com/apprunner/)** can do it for you while abstracting infrastructure provisioning.
+And if you absolutely need to run containers, well **[AWS App Runner](https://aws.amazon.com/apprunner/)** can do it for you while abstracting a lot of infrastructure provisioning.
 
 
 > *PS: I am preparing for the CKA exam at the time of publishing this blog post.*
