@@ -72,7 +72,7 @@ DynamoDB and S3 are used to store all todos and related data. Our Flask app will
 
 ## Application Architecture
 
-![architecture.png](https://cdn.hashnode.com/res/hashnode/image/upload/v1644781019735/9zzmQ2-Er7.png)
+![architecture.png](https://cdn.hashnode.com/res/hashnode/image/upload/v1644837094240/XVtd3s9aA.png)
 
 The main difference with the serverless version of this app is on the backend side. Instead of API + Lambda, we now have API + ALB + ECS + plus some magic to make them work together. We also have to manage how the ECS stack scales to accommodate traffic. 
 Let's describe the backend.
@@ -173,7 +173,7 @@ The backend code is dockerized and images are pushed to our private ECR reposito
 
 While I had fun spinning up containers with ECS, I found the operations burden (setting up the VPC, ensuring HA with scaling group and policies...) a lot heavier than when deploying serverless resources. Not to talk about the cost of having EC2s running at all times.
 It is true that some applications use cases require the exclusive use of containers. But now with more AWS services being serverless friendly, it is easier to redesign existing apps to take advantage of that.
-And if you absolutely need to run containers, well **[AWS App Runner](https://aws.amazon.com/apprunner/)** can do it for you while abstracting a lot of infrastructure provisioning.
+And if you absolutely need to run containers, maybe because the app requires a rich ecosystem, well **[AWS App Runner](https://aws.amazon.com/apprunner/)** can do it for you while abstracting a lot of infrastructure provisioning. And if you need deeper control over your infrastructure, go for Kubernetes.
 
 
 > *PS: I am preparing for the CKA exam at the time of publishing this blog post.*
